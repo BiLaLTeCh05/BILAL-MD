@@ -1,7 +1,7 @@
 {
-  "name": "🧋𝐏𝐎𝐏𝐊𝐈𝐃 𝐆𝐋𝐄🧋",
-  "description": "🔥 Stylish WhatsApp Multi-Bot | Popkid GLE | Auto Mods + AI + Fun Tools + Media",
-  "logo": "https://files.catbox.moe/959dyk.jpg",
+  "name": "👑 BILAL-MD 👑",
+  "description": "👑 WHATSAPP BOT 👑",
+  "logo": "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
   "keywords": [
     "whatsapp",
     "bot",
@@ -13,7 +13,7 @@
     "downloader",
     "heroku"
   ],
-  "repository": "https://github.com/yourname/your-repo",
+  "repository": "https://github.com/BiLaLTeCh05/BILAL-MD",
   "stack": "heroku-24",
   "env": {
     "SESSION_ID": {
