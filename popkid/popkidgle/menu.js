@@ -16,15 +16,15 @@ const menu = async (m, sock) => {
 
   if (cmd === "menu") {
     const start = new Date().getTime();
-    await m.React('🪆');
+    await m.React('👑');
     const end = new Date().getTime();
     const responseTime = (end - start) / 1000;
 
     const runtime = formatRuntime(Date.now() - startTime);
     const mode = m.isGroup ? "public" : "private";
-    const ownerName = config.OWNER_NAME || "POPKID";
+    const ownerName = config.OWNER_NAME || "BILAL-MD";
 
-    let profilePictureUrl = 'https://files.catbox.moe/e1k73u.jpg';
+    let profilePictureUrl = 'https://files.catbox.moe/kunzpz.png';
     try {
       const pp = await sock.profilePictureUrl(m.sender, 'image');
       if (pp) profilePictureUrl = pp;
@@ -34,14 +34,13 @@ const menu = async (m, sock) => {
 
     const menuText = `
 
-╔══⬡ POPKID-XD BOT V2 ⬡══╗
-┃ 🧠 Dev   : Popkid KE
-┃ 🤖 Name  : Popkid-XD
-┃ ⚡ Uptime: ${runtime}
-┃ 🌐 Mode  : ${mode}
-┃ 🆙 Ver.  : 2.0.0
-┃ 🔧 Prefix: ${prefix}
-┃ 👑 Owner : ${ownerName}
+╔══× *👑 BILAL-MD 👑* ×══╗
+┃ 👑| OWNER×> BILAL
+┃ 👑| UPTIME×> ${runtime}
+┃ 👑| MODE×> ${mode}
+┃ 👑| PLATFORM×> LiNUX
+┃ 👑| PREFIX×> ${prefix}
+┃ 👑| USER×> ${ownerName}
 ╚════════════════════╝
 
 ╔═『 *🌟 MAIN MENU* 』═╗
@@ -198,7 +197,7 @@ const menu = async (m, sock) => {
         forwardingScore: 5,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-          newsletterName: "POPKID TECH",
+          newsletterName: "BILAL-MD",
           newsletterJid: "120363420342566562@newsletter"
         }
       }
