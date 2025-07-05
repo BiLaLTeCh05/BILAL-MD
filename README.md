@@ -12,7 +12,7 @@
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
-# *_GET • [SESSION ID](https://bilal-x-md-e3f3eb8647a7.herokuapp.com/) • FOR BILAL-MD_*
+# *_GET • [SESSION ID](https://bilal-md-pair1-4cd29e75b208.herokuapp.com/) • FOR BILAL-MD_*
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
