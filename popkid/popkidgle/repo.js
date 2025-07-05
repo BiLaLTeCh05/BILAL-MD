@@ -6,28 +6,24 @@ const repo = async (m, sock) => {
   if (cmd !== 'repo') return; // popkid
 
   try {
-    await m.React('📁');
+    await m.React('🔰');
 
-    const owner = config.OWNER_NAME || 'Popkid';
-    const githubRepo = 'https://github.com/devpopkid/POPKID-GLE';
-    const imageUrl = 'https://files.catbox.moe/u46hbi.jpg'; 
+    const owner = config.OWNER_NAME || 'BILAL';
+    const githubRepo = 'https://github.com/BiLaLTeCh05/BILAL-MD';
+    const imageUrl = 'https://files.catbox.moe/kunzpz.png'; 
 
     const repoText = `
 ╭───────────────⭓
-│  📦 *ᴘᴏᴘᴋɪᴅ-ɢʟᴇ ʙᴏᴛ ʀᴇᴘᴏ*
+│  *👑 BILAL-MD 👑*
 ╰───────────────⭓
 ┌───────────◇
-│ 🔗 *GitHub Repo:*
-│ ${githubRepo}
-│ 
-│ 👑 *Owner:* ${owner}
-│ ⚙️ *Prefix:* ${prefix}
-│ 🧩 *Version:* 2.0
-│ 📌 *Type:* Public • Open Source
-└───────────◇
+│ 👑| *REPO:❯* ${githubRepo}
+│ 👑| *OWNER:❯* BILAL
+│ 👑| *FORK THE REPO*
+│ 👑| *STAR THE REPO*
 
-🔔 Feel free to star ⭐, fork 🍴 or contribute!
-💡 Report bugs using: *${prefix}report [your bug here]*
+*👑 THANKS FOR CHOOSING 👑*
+      *👑 BILAL-MD 👑*
 `.trim();
 
     // 🖼️ popkid images
@@ -38,7 +34,7 @@ const repo = async (m, sock) => {
         forwardingScore: 999,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-          newsletterName: "Popkid-Gle",
+          newsletterName: "BILAL-MD",
           newsletterJid: "120363420342566562@newsletter"
         }
       }
@@ -69,8 +65,8 @@ const repo = async (m, sock) => {
     }, { quoted: m });
 
   } catch (err) {
-    console.error('❌ Error in .repo command:', err);
-    await m.reply('❌ Failed to load repository info.');
+    console.error('*👑 BILAL-MD ERROR 👑*', err);
+    await m.reply('*👑 BILAL-MD ERROR 👑*');
   }
 };
 
