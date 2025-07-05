@@ -20,7 +20,7 @@
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
-# *_FOLLOW • [WHATSAPP CHANNEL](https://whatsapp.com/channel/0029VaZtuAxLI8YeUWRXBg3Y) •_*
+# *_FOLLOW • [WHATSAPP CHANNEL](https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G) •_*
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
