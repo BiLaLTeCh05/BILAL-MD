@@ -1,35 +1,37 @@
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-# ( =========> • BILAL-MD • <========= )
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-<p align="center">
-  <a href="https://github.com/BilalTech05">
-    <img alt="GOLD-MD" height="400" src="https://i.postimg.cc/7LWBgYMq/bilal.jpg">
-  </a>
-</p>
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=40&pause=1000&color=0000FF&center=true&vCenter=true&width=815&height=60&lines=🦋+▭+▬+▭+▬+▭+▬+▭+▬+▭+▬+▭+🐇)](https://git.io/typing-svg) 
 
-# *_JUST • [FORK](https://github.com/BilalTech05/BILAL-MD/fork) • THE REPO_*
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Black+Ops+One&size=100&pause=900&color=1BAFBAFF&center=true&width=1100&height=150&lines=POPKID-+GLE+BOT" alt="Typing SVG" /></a>
+  </p>
 
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
-# *_GET • [SESSION ID](https://bilal-x-md-e3f3eb8647a7.herokuapp.com/) • FOR BILAL-MD_*
 
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Black+Ops+One&size=50&pause=1000&color=DAA520&center=true&width=910&height=100&lines=POPKID+GLE+TEAM+;KEEP+USING+POPKID+GLE" alt="Typing SVG" /></a>
+  </p>
+ 
+  
+<a href="https://whatsapp.com/channel/0029VbB6d0KKAwEdvcgqrH26">
+ <img alt="𝐏𝐎𝐏𝐊𝐈𝐃 𝐗𝐓𝐄𝐂𝐇" height="400" src="https://files.catbox.moe/e6rhto.jpg"></a>
+ 
 
-# *_NOW • [DEPLOY](https://dashboard.heroku.com/new?button-url=https://github.com/D4X-UMAR/GOLD-MD&template=https://github.com/BilalTech05/BILAL-MD) • BILAL-MD ON HEROKU_*
+# ❤️ ғᴏʀᴋ ᴍʏ ʀᴇᴘᴏ
+- <a align="center"><a href="https://github.com/devpopkid/POPKID-GLE/fork"> <img src="https://img.shields.io/badge/FORK%20REPO-colorless?style=for-the-badge&logo=porsche" width="220" height="38.45"/></a></p>
 
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
+# 🤍 ɢᴇᴛ ᴘᴀɪʀ ᴄᴏᴅᴇ
+</a></p>
+- <a href="https://popsession.onrender.com"><img title="TAP FOR SESSION ID" src="https://img.shields.io/badge/LOG IN FOR SESSION ID-h?color=pink&style=for-the-badge&logo=porsche&logoColor=pink" width="240" height="38.45"/></a></p>
 
-# *_FOLLOW • [WHATSAPP CHANNEL](https://whatsapp.com/channel/0029VaZtuAxLI8YeUWRXBg3Y) •_*
+# 💝 ᴄʀᴇᴀᴛᴇ ʜᴇʀᴏᴋᴜ
 
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
+</a></p>
+- <a href='https://signup.heroku.com/' target="_silver"><img alt='Heroku' src='https://img.shields.io/badge/-𝐂𝐑𝐄𝐀𝐓𝐄 𝐀𝐂𝐂𝐎𝐔𝐍𝐓 𝐍𝐎𝐖-rgb(224, 255, 255)?style=for-the-badge&logo=ferrari&logoColor=pink' width="240" height="38.45"/></a>
 
-# *_CONTACT ME ON • [WHATSAPP](https://wa.me/923078071982) •_*
+# 🧡 ʜᴇʀᴏᴋᴜ ʜᴏsᴛɪɴɢ
+- <a align="center"><a href="https://forkchecker.vercel.app/"> <img src="https://img.shields.io/badge/DEPLOY%20NOW-blue?style=for-the-badge&logo=porsche" width="220" height="38.45"/></a></p>
 
-<a><img src='https://i.imgur.com/LyHic3i.gif'/><>
+# 🧡 Render Deployment 
+- <a align="center"><a href="https://dashboard.render.com/web/new"> <img src="https://img.shields.io/badge/RENDER%20DEPLOYMENT-red?style=for-the-badge&logo=nike" width="220" height="38.45"/></a></p>
 
-# *_DEVELOPER_*
-<a href="https://github.com/BilalTech05"><img src="https://i.postimg.cc/x8KFHsZ0/BILAL-MD.jpg" width="250" height="250" alt="UMAR"/></a>
-# ( => • BILAL • <= )
 
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
+## 💖 CONTACT ME
+[![Whatsapp contact](https://img.shields.io/badge/Contact-Dev%20Popkid-25D366?style=for-the-badge&logo=whatsapp)](https://wa.me/+254111385747)
+
