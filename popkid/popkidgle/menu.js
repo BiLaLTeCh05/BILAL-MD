@@ -16,7 +16,7 @@ const menu = async (m, sock) => {
 
   if (cmd === "menu") {
     const start = new Date().getTime();
-    await m.React('👑');
+    await m.React('🔰');
     const end = new Date().getTime();
     const responseTime = (end - start) / 1000;
 
@@ -29,18 +29,17 @@ const menu = async (m, sock) => {
       const pp = await sock.profilePictureUrl(m.sender, 'image');
       if (pp) profilePictureUrl = pp;
     } catch (err) {
-      console.error("Error fetching profile picture:", err);
+      console.error("*👑 BILAL-MD ERROR 👑*", err);
     }
 
     const menuText = `
 
 ╔══× *👑 BILAL-MD 👑* ×══╗
-┃ 👑| OWNER×> BILAL
-┃ 👑| UPTIME×> ${runtime}
-┃ 👑| MODE×> ${mode}
-┃ 👑| PLATFORM×> LiNUX
-┃ 👑| PREFIX×> ${prefix}
-┃ 👑| USER×> ${ownerName}
+┃ 👑| UPTIME:❯ ${runtime}
+┃ 👑| *MODE:❯ ${mode}
+┃ 👑| *PLATFORM:❯* LiNUX
+┃ 👑| PREFIX:❯ ${prefix}
+┃ 👑| VERSION:❯ 1.0
 ╚════════════════════╝
 
 ╔═『 *🌟 MAIN MENU* 』═╗
@@ -181,13 +180,7 @@ const menu = async (m, sock) => {
 ┃ 😊 .pat
 ┃ 😊 .hug
 ╚════════════════════╝
-
-╭─────────────◆
-│ ⚡ *POPKID TECH NEWS*
-│ Stay updated with the
-│ latest tools, bots, and
-│ tips from Popkid KE!
-╰─────────────◆
+*👑 BILAL-MD WHATSAPP BOT 👑*
 `;
 
     await sock.sendMessage(m.from, {
