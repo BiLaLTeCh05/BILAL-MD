@@ -51,7 +51,7 @@ const gcEvent = async (m, Matrix) => {
         forwardingScore: 777,
         isForwarded: true,
         externalAdReply: {
-          title: "👑 Popkid-Xmd Bot",
+          title: "👑bilal tech",
           body: "Welcome system updated successfully!",
           thumbnailUrl: profilePic,
           mediaType: 1,
