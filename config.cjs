@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const config = {
   // 🧠 Session & Identity
-  SESSION_ID: process.env.SESSION_ID || "Popkidmd$MLJjtNih",
+  SESSION_ID: process.env.SESSION_ID || "",
   PREFIX: process.env.PREFIX || '.',
   BOT_NAME: process.env.BOT_NAME || "POPKID GLE",
   BOT: process.env.BOT || "hello 👋",
@@ -43,12 +43,12 @@ const config = {
 
   // 🛠 Other
   MODE: process.env.MODE || "public",
-  DELETED_MESSAGES_CHAT_ID: process.env.DELETED_MESSAGES_CHAT_ID || "254111385747@s.whatsapp.net",
+  DELETED_MESSAGES_CHAT_ID: process.env.DELETED_MESSAGES_CHAT_ID || "+923078071982@s.whatsapp.net",
 
   // 👑 Owner & Permissions
   OWNER_NAME: process.env.OWNER_NAME || "❤️popkid🙊",
-  OWNER_NUMBER: process.env.OWNER_NUMBER || "254111385747",
-  SUDO_NUMBER: process.env.SUDO_NUMBER || "254111385747",
+  OWNER_NUMBER: process.env.OWNER_NUMBER || "+923078071982",
+  SUDO_NUMBER: process.env.SUDO_NUMBER || "+923078071982",
 
   // 💚 Auto react emoji
   AUTOLIKE_EMOJI: process.env.AUTOLIKE_EMOJI || '💚',
