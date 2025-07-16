@@ -38,7 +38,7 @@ const ping = async (m, sock) => {
         externalAdReply: {
           title: '⚡ Bot Response Time ⚡',
           body: 'Check how fast the bot is!',
-          thumbnailUrl: 'https://telegra.ph/file/e776a1711f9dbfc250fc4.jpg', // stylish image
+          thumbnailUrl: 'https://files.catbox.moe/kunzpz.png', // stylish image
           mediaType: 1,
           renderLargerThumbnail: true,
           showAdAttribution: true,
