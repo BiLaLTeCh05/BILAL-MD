@@ -5,9 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "pm2 start index.js --name POPKID-GLE",
-    "stop": "pm2 stop POPKID-GLE",
-    "restart": "pm2 restart POPKID-GLE"
+    "start": "node index.js"
   },
   "keywords": [
     "popkid-bot",
@@ -16,9 +14,6 @@
   ],
   "author": "POPKID-GLE",
   "license": "ISC",
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "dependencies": {
     "@whiskeysockets/baileys": "npm:asitha-new-v99",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
