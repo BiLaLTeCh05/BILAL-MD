@@ -37,7 +37,7 @@ const uptime = async (m, sock) => {
         externalAdReply: {
           title: '📶 Bot Uptime Monitor',
           body: 'Check how long the bot has been running.',
-          thumbnailUrl: 'https://telegra.ph/file/0f10b1db77be618865f60.jpg',
+          thumbnailUrl: 'https://files.catbox.moe/kunzpz.png',
           mediaType: 1,
           renderLargerThumbnail: true,
           showAdAttribution: true,
