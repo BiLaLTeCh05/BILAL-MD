@@ -1,7 +1,7 @@
 {
-  "name": "BILAL-MD",
-  "description": "Javascript WhatsApp bot made by Jᴀᴡᴀᴅ TᴇᴄʜX",
-  "logo": "https://files.catbox.moe/kunzpz.png",
+  "name": "👑 BILAL-MD 👑",
+  "description": "♥️ WHATSAPP BOT ♥️",
+  "logo": "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
   "keywords": ["BILAL-MD"],
   "success_url": "/",
 
@@ -86,20 +86,20 @@
     "OWNER_NAME": {
       "description": "Type Bot Owner Name.",
       "required": false,
-      "value": "BILAL-KING"
+      "value": "👑 BILAL 👑"
 }, 
 
     "OWNER_NUMBER": {
       "description": "put the owner number for bot.",
       "required": false,
-      "value": "92310344XXXX"
+      "value": "923078071982"
 
     }, 
 
     "BOT_NAME": {
       "description": "Type here the bot name.",
       "required": false,
-      "value": "BILAL-MD"
+      "value": "👑 BILAL-MD 👑"
 
       }, 
 
@@ -132,7 +132,7 @@
     "MENU_IMAGE_URL": {
       "description": "add url for mention reply and menu if want.",
       "required": false,
-      "value": "https://files.catbox.moe/cz2592.jpeg"
+      "value": "https://i.postimg.cc/7LWBgYMq/bilal.jpg"
     },
     
      "DESCRIPTION": {
