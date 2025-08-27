@@ -12,7 +12,7 @@
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
-# *_GET • [SESSION ID](https://bilal-bot-x-9e992e30393e.herokuapp.com/) • FOR BILAL-MD_*
+# *_GET • [SESSION ID](https://pair-vd1s.onrender.com) • FOR BILAL-MD_*
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
@@ -28,7 +28,7 @@
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/><>
 
-# *_DEVELOPER_*
+# *DEVELOPER*
 <a href="https://github.com/BilalTech05"><img src="https://i.postimg.cc/x8KFHsZ0/BILAL-MD.jpg" width="250" height="250" alt="UMAR"/></a>
 # ( => • BILAL • <= )
 
