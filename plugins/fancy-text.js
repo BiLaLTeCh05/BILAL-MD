@@ -22,8 +22,8 @@ cmd({
       );
     }
 
-    // API se fonts
-    const apiUrl = `https://violetics.pw/api/texts/font?apikey=beta&text=${encodeURIComponent(text)}`;
+    // ✅ Dark-Yasiya API se fonts
+    const apiUrl = `https://www.dark-yasiya-api.site/other/font?text=${encodeURIComponent(text)}`;
     const response = await axios.get(apiUrl);
 
     if (!response.data || !response.data.result) {
@@ -123,7 +123,7 @@ cmd({
 }, async (conn, m, store, { body, from }) => {
   try {
     const [, , page, text] = body.split("_");
-    const apiUrl = `https://violetics.pw/api/texts/font?apikey=beta&text=${decodeURIComponent(text)}`;
+    const apiUrl = `https://www.dark-yasiya-api.site/other/font?text=${decodeURIComponent(text)}`;
     const response = await axios.get(apiUrl);
     const fonts = Object.entries(response.data.result);
     await sendFancyPage(conn, from, m, fonts, parseInt(page), decodeURIComponent(text));
@@ -138,7 +138,7 @@ cmd({
 }, async (conn, m, store, { body, from }) => {
   try {
     const [, , page, text] = body.split("_");
-    const apiUrl = `https://violetics.pw/api/texts/font?apikey=beta&text=${decodeURIComponent(text)}`;
+    const apiUrl = `https://www.dark-yasiya-api.site/other/font?text=${decodeURIComponent(text)}`;
     const response = await axios.get(apiUrl);
     const fonts = Object.entries(response.data.result);
     await sendFancyPage(conn, from, m, fonts, parseInt(page), decodeURIComponent(text));
@@ -154,7 +154,7 @@ cmd({
 }, async (conn, m, store, { body, from }) => {
   try {
     const [, , text] = body.split("_");
-    const apiUrl = `https://violetics.pw/api/texts/font?apikey=beta&text=${decodeURIComponent(text)}`;
+    const apiUrl = `https://www.dark-yasiya-api.site/other/font?text=${decodeURIComponent(text)}`;
     const response = await axios.get(apiUrl);
     const fonts = Object.entries(response.data.result);
 
