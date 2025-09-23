@@ -1,24 +1,37 @@
-let handler = async (m, { conn, args, usedPrefix, command }) => {
-  let chat = global.db.data.chats[m.chat]
-  if (!args[0]) {
-    return m.reply(`⚙️ Usage:\n\n${usedPrefix + command} on\n${usedPrefix + command} off`)
-  }
+const { cmd } = require('../command');
 
-  if (args[0] === 'on') {
-    chat.antiBot = true
-    m.reply('✅ AntiBot activated! Now I will auto-remove bots.')
-  } else if (args[0] === 'off') {
-    chat.antiBot = false
-    m.reply('❌ AntiBot deactivated!')
-  } else {
-    m.reply(`⚙️ Usage:\n\n${usedPrefix + command} on\n${usedPrefix + command} off`)
-  }
-}
+// Global flag for AntiBot mode
+let antibotEnabled = false;
 
-handler.help = ['antibot <on/off>']
-handler.tags = ['group']
-handler.command = /^antibot$/i
-handler.group = true
-handler.admin = true
+cmd({
+    pattern: "antibot",
+    react: "🤖",
+    desc: "Enable or disable AntiBot protection in groups",
+    category: "group",
+    use: ".antibot on / .antibot off",
+    filename: __filename
+}, async (conn, mek, m, { text, isGroup, isAdmin }) => {
+    try {
+        if (!isGroup) return m.reply("⚠️ Yeh command sirf groups me use ho sakti hai.");
+        if (!isAdmin) return m.reply("❌ Sirf *Group Admins* is command ko use kar sakte hain.");
 
-export default handler
+        const choice = text.trim().toLowerCase();
+        if (choice === "on") {
+            antibotEnabled = true;
+            return m.reply("✅ AntiBot mode *enabled* ho gaya hai. Ab koi bot detect hote hi remove ho jayega.");
+        } else if (choice === "off") {
+            antibotEnabled = false;
+            return m.reply("🚫 AntiBot mode *disabled* ho gaya hai.");
+        } else {
+            return m.reply("❓ Usage: `.antibot on` ya `.antibot off` likho.");
+        }
+    } catch (e) {
+        console.error("AntiBot Command Error:", e);
+        return m.reply("❌ Kuch error aagaya hai, logs check karo.");
+    }
+});
+
+// Export flag so antibot.js can use it
+module.exports = {
+    isAntibotEnabled: () => antibotEnabled
+};
