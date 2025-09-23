@@ -20,7 +20,7 @@ cmd(
     },
     async (conn, mek, m, { quoted, args, q, reply, from }) => {
         if (!mek.quoted) return reply(`*PEHLE KISI STICKER KO MENTION KARO 😊🌹*`);
-        if (!q) return reply(`*DUBARA KOSHISH KARO 😊🌹*`);
+        if (!q) return reply(`*DUBARA KOSHISH KARO AUR 😊❤️* \n *.TAKE MADE BY APKA NAME* \n *JAB ESE LIKHO GE TO WO STICKER APKA NAME KA BAN JAYE GA 😊🌹❤️*`);
 
         let mime = mek.quoted.mtype;
         let pack = q;
