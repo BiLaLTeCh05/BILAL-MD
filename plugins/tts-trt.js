@@ -7,14 +7,14 @@ cmd({
     pattern: "trt",
     alias: ["translate"],
     desc: "🌍 Translate text between languages",
-    react: "⚡",
+    react: "🌹",
     category: "other",
     filename: __filename
 },
 async (conn, mek, m, { from, q, reply }) => {
     try {
         const args = q.split(' ');
-        if (args.length < 2) return reply("❗ Please provide a language code and text. Usage: .translate [language code] [text]");
+        if (args.length < 2) return reply("*AP KO KISI KE MSG KI LANGUAGE SAMAJH NAHI AA RH 🤔* \n *TO ESE LIKHO ☺️🌹* \n *❮.TRT UR❯ WO MSG PASTE KRO ☺️🌹* \");
 
         const targetLang = args[0];
         const textToTranslate = args.slice(1).join(' ');
@@ -24,13 +24,13 @@ async (conn, mek, m, { from, q, reply }) => {
         const response = await axios.get(url);
         const translation = response.data.responseData.translatedText;
 
-        const translationMessage = `> *BILAL-TRANSLATION*
+        const translationMessage = `*👑 BILAL-MD WHATSAPP BOT 👑*
 
-> 🔤 *Original*: ${textToTranslate}
+*APKA MSG:❯* ${textToTranslate}
 
-> 🔠 *Translated*: ${translation}
+*TRANSLATED:❯* ${translation}
 
-> 🌐 *Language*: ${targetLang.toUpperCase()}`;
+*LANGUAGE:❯* ${targetLang.toUpperCase()}`;
 
         return reply(translationMessage);
     } catch (e) {
@@ -44,12 +44,12 @@ cmd({
     pattern: "tts",
     desc: "download songs",
     category: "download",
-    react: "👧",
+    react: "🎙️",
     filename: __filename
 },
 async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply}) => {
 try{
-if(!q) return reply("Need some text.")
+if(!q) return reply("*ESE LIKHO ☺️🌹* \n *TTS TUM KESE HOO 🤔*")
     const url = googleTTS.getAudioUrl(q, {
   lang: 'hi-IN',
   slow: false,
