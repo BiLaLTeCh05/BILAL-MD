@@ -24,18 +24,18 @@ cmd({
 
         await reply(`🔎 *"${query}" ki photos dhundi ja rahi hain...* 🖼️`);
 
-        // ✅ Stable free image API
-        const apiUrl = `https://api.ryzendesu.vip/api/search/image?query=${encodeURIComponent(query)}`;
+        // ✅ Pinterest API (Stable)
+        const apiUrl = `https://api.akuari.my.id/search/pinterest?query=${encodeURIComponent(query)}`;
         const response = await axios.get(apiUrl);
 
-        if (!response.data?.result || response.data.result.length === 0) {
+        if (!response.data?.hasil || response.data.hasil.length === 0) {
             return reply("*APKI PHOTOS NAHI MILI 😔*");
         }
 
         // Save images in cache for this chat
         imageCache[from] = {
             query,
-            results: response.data.result,
+            results: response.data.hasil,
             index: 0
         };
 
