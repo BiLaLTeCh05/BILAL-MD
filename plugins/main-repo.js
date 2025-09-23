@@ -11,7 +11,7 @@ cmd({
     filename: __filename,
 },
 async (conn, mek, m, { from, reply }) => {
-    const githubRepoURL = "https://github.com/chamod-os/Whiteshadow-v5.0";
+    const githubRepoURL = "https://github.com/BilalTech05/BILAL-MD";
 
     try {
         // Remove trailing slash if any
