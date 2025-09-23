@@ -1,6 +1,7 @@
 const config = require('../config');
 const { cmd } = require('../command');
 const yts = require('yt-search');
+const fetch = require('node-fetch');
 
 cmd({
     pattern: "video",
@@ -15,7 +16,7 @@ cmd({
         if (!q) return await reply("*APKO KOI VIDEO DOWNLOAD KARNI HAI TO ESE LIKHEIN 😊♥️* \n *.VIDEO ❮APKI VIDEO KA NAME❯* \n *JESE 😊* \n *.VIDEO MERE BAT BAN GAI HAI NAAT* \n *.VIDEO QURAN MAJEED TILAWAT* \n *ESE JAB LIKHO GE TO APKI VIDEOS DOWNLOAD HO JAYE GE OK 🌹*");
 
         let videoUrl, title;
-        
+
         // Check if it's a URL
         if (q.match(/(youtube\.com|youtu\.be)/)) {
             videoUrl = q;
@@ -31,15 +32,20 @@ cmd({
 
         await reply("*APKI VIDEO DOWNLOAD HO RAHI HAI ☺️♥️* \n *THORA SA INTAZAR KAREIN 🌹*");
 
-        // Use API to get video
-        const apiUrl = `https://gtech-api-xtp1.onrender.com/api/video/yt?apikey=APIKEY&url=${encodeURIComponent(videoUrl)}`;
+        // 🔑 Apify API call
+        const API_KEY = "apify_api_pvubpkMlZfgVv8bUXLmAHiSSiMULUy1kCJg0";
+        const apiUrl = `https://api.apify.com/v2/acts/streamers~youtube-video-downloader/run-sync-get-dataset-items?token=${API_KEY}&url=${encodeURIComponent(videoUrl)}`;
+
         const response = await fetch(apiUrl);
         const data = await response.json();
 
-        if (!data.success) return await reply("❌ Failed to download video!");
+        if (!data.length) return await reply("❌ Failed to download video!");
+
+        // Apify se hamesha array milta hai
+        const downloadLink = data[0].url;
 
         await conn.sendMessage(from, {
-            video: { url: data.result.download_url },
+            video: { url: downloadLink },
             mimetype: 'video/mp4',
             caption: `*${title}*`
         }, { quoted: mek });
@@ -48,6 +54,7 @@ cmd({
 
     } catch (error) {
         console.error(error);
-        await reply(`*THORI DER BAD KOSHISH KARNA 🥺*`);
+        await reply(`*AP IS VIDEO KO THORI DER BAD DOWNLOAD KAR LENA PLEZ 🥺🦋*
+        *`);
     }
 });
