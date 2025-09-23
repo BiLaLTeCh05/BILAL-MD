@@ -1,11 +1,14 @@
 const { cmd } = require("../command");
 const axios = require("axios");
 
+// Memory to store pagination data per chat
+let imageCache = {};
+
 cmd({
     pattern: "img",
     alias: ["image", "googleimage", "searchimg"],
     react: "🖼️",
-    desc: "Search and download Google images",
+    desc: "Search and download images with pagination",
     category: "fun",
     use: ".img <keywords>",
     filename: __filename
@@ -13,40 +16,95 @@ cmd({
     try {
         const query = args.join(" ");
         if (!query) {
-            return reply("*APKO KON C PHOTOS DOWNLOAD KARNI HAI...🤔* \n * ESE LIKHO 😊♥️* \n *.IMG FLOWERS PICS*");
+            return reply(
+                "*APKO KON C PHOTOS DOWNLOAD KARNI HAI...🤔* \n\n" +
+                "ESE LIKHO: \n```.img flowers``` 🌹"
+            );
         }
 
-        await reply(`*THORI DER ME APKI PHOTOS SEND KAR DI JAYE GE ☺️❤️*`);
+        await reply(`🔎 *"${query}" ki photos dhundi ja rahi hain...* 🖼️`);
 
-        const url = `https://apis.davidcyriltech.my.id/googleimage?query=${encodeURIComponent(query)}`;
-        const response = await axios.get(url);
+        // ✅ Stable free image API
+        const apiUrl = `https://api.ryzendesu.vip/api/search/image?query=${encodeURIComponent(query)}`;
+        const response = await axios.get(apiUrl);
 
-        // Validate response
-        if (!response.data?.success || !response.data.results?.length) {
+        if (!response.data?.result || response.data.result.length === 0) {
             return reply("*APKI PHOTOS NAHI MILI 😔*");
         }
 
-        const results = response.data.results;
-        // Get 5 random images
-        const selectedImages = results
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 5);
+        // Save images in cache for this chat
+        imageCache[from] = {
+            query,
+            results: response.data.result,
+            index: 0
+        };
 
-        for (const imageUrl of selectedImages) {
-            await conn.sendMessage(
-                from,
-                { 
-                    image: { url: imageUrl },
-                    caption: `*👑 BILAL-MD WHATSAPP BOT 👑*`
-                },
-                { quoted: mek }
-            );
-            // Add delay between sends to avoid rate limiting
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
+        // Send first page
+        sendImagePage(conn, from, mek);
 
     } catch (error) {
-        console.error('Image Search Error:', error);
-        reply(`❌ Error: ${error.message || "Failed to fetch images"}`);
+        console.error("Image Search Error:", error);
+        reply("❌ Error: Images fetch karne me dikkat aa rahi hai. Baad me try karo.");
+    }
+});
+
+// ====================
+// 📸 Helper Function
+// ====================
+async function sendImagePage(conn, from, mek) {
+    const cache = imageCache[from];
+    if (!cache) return;
+
+    const start = cache.index;
+    const end = start + 5;
+    const images = cache.results.slice(start, end);
+
+    if (images.length === 0) {
+        return conn.sendMessage(from, { text: "✅ Aur photos nahi milin 😅" }, { quoted: mek });
+    }
+
+    // Send each image
+    for (const imageUrl of images) {
+        await conn.sendMessage(
+            from,
+            { image: { url: imageUrl }, caption: `*👑 BILAL-MD WHATSAPP BOT 👑*` },
+            { quoted: mek }
+        );
+        await new Promise(res => setTimeout(res, 1200));
+    }
+
+    // Update index for next page
+    cache.index += 5;
+
+    // Add Next button if more images left
+    if (cache.index < cache.results.length) {
+        await conn.sendMessage(from, {
+            text: `🔎 Aur photos dekhne ke liye *Next Page* dabaye 👇`,
+            buttons: [
+                { buttonId: `nextimg_${cache.query}`, buttonText: { displayText: "➡️ Next Page" }, type: 1 }
+            ],
+            headerType: 2
+        }, { quoted: mek });
+    } else {
+        await conn.sendMessage(from, { text: "✅ Ye sari photos thi jo milin 🌹" }, { quoted: mek });
+        delete imageCache[from]; // clear cache after last page
+    }
+}
+
+// ====================
+// 🔘 Next Button Handler
+// ====================
+cmd({
+    pattern: "nextimg_",
+    dontAddCommandList: true
+}, async (conn, mek, m, { from, body }) => {
+    try {
+        const query = body.split("_")[1];
+        if (!imageCache[from]) {
+            return conn.sendMessage(from, { text: "⚠️ Pehle `.img <query>` use karein." }, { quoted: mek });
+        }
+        await sendImagePage(conn, from, mek);
+    } catch (error) {
+        console.error("Next page error:", error);
     }
 });
