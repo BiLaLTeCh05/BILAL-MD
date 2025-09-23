@@ -15,11 +15,11 @@ cmd({
         if (!isGroup) return m.reply("⚠️ Yeh command sirf groups me use ho sakti hai.");
         if (!isAdmin) return m.reply("❌ Sirf *Group Admins* is command ko use kar sakte hain.");
 
-        // Check if bot is admin in this group
+        // Bot admin check
         const metadata = await conn.groupMetadata(m.chat);
         const botNumber = conn.user.id.split(":")[0] + "@s.whatsapp.net";
         const botParticipant = metadata.participants.find(p => p.id === botNumber);
-        const isBotAdmin = botParticipant && (p.admin === "admin" || p.admin === "superadmin");
+        const isBotAdmin = botParticipant && (botParticipant.admin === "admin" || botParticipant.admin === "superadmin");
 
         if (!isBotAdmin) {
             return m.reply("❌ Mujhe admin banana padega taaki main AntiBot protection chala sakun.");
