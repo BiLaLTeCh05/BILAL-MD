@@ -11,7 +11,7 @@ cmd({
 }, async (conn, m, store, { from, quoted, args, q, reply }) => {
   try {
     if (!q) {
-      return reply("*AP NE KISI BHI TEXT KO STYLISH BANAN HAI TO ESE LIKHE ☺️❤️* \n *.FANCY BILAL-MD");
+      return reply("AP NE KISI BHI TEXT KO STYLISH BANAN HAI TO ESE LIKHE ☺️❤️");
     }
 
     const apiUrl = `https://www.dark-yasiya-api.site/other/font?text=${encodeURIComponent(q)}`;
@@ -22,7 +22,7 @@ cmd({
     }
 
     const fonts = response.data.result.map(item => `*${item.name}:*\n${item.result}`).join("\n\n");
-    const resultText = `*🌹 FANCY TEXTS 🌹* \n\n${fonts}\n\n *👑 BILAL-MD WHATSAPP BOT 👑**`;
+    const resultText = `*YOUR NAME WITH STYLISH TEXT* \n\n${fonts}\n\n *👑 BILAL-MD WHATSAPP BOT 👑**`;
 
     await conn.sendMessage(from, { text: resultText }, { quoted: m });
   } catch (error) {
