@@ -5,17 +5,19 @@ function convertToBool(text, fault = 'true') {
     return text === fault ? true : false;
 }
 
+const OWNER_NUMBER = (process.env.OWNER_NUMBER || "923000000000").replace(/[^0-9]/g, "");
+const DEV = (process.env.DEV || "923000000000").replace(/[^0-9]/g, "");
+
+// Global owners array (bot in dono ko full owner maanega)
+global.owners = [OWNER_NUMBER, DEV];
+
 module.exports = {
     SESSION_ID: process.env.SESSION_ID || "BILAL-MD~SESSION_ID",
-    // 👑 Owners set
-    OWNER_NUMBER: process.env.OWNER_NUMBER || "923000000000", // Heroku var owner
-    DEV: process.env.DEV || "923000000000", // Session owner
 
-    // 👑 Owners array (dono ko full access milega)
-    OWNERS: [
-        (process.env.DEV || "923000000000").replace(/[^0-9]/g, ""),
-        (process.env.OWNER_NUMBER || "923000000000").replace(/[^0-9]/g, "")
-    ],
+    // 👑 Owners
+    OWNER_NUMBER,
+    DEV,
+    OWNERS: global.owners,
 
     OWNER_NAME: process.env.OWNER_NAME || "👑 BILAL 👑",
 
