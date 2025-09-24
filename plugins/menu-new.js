@@ -45,13 +45,12 @@ cmd({
             { buttonId: "support_channel", buttonText: { displayText: "📢 BILAL-MD SUPPORT" }, type: 1 },
         ];
 
-        // Send Main Menu
+        // Send Main Menu (⚡ footer hata diya yahan se)
         await conn.sendMessage(
             from,
             {
                 image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/kunzpz.png' },
                 caption: menuCaption,
-                footer: "*👑 BILAL-MD WHATSAPP BOT 👑*",
                 buttons: buttons,
                 headerType: 4,
                 contextInfo: contextInfo
@@ -65,7 +64,7 @@ cmd({
 });
 
 // ==================
-// 📌 BUTTON HANDLER (GLOBAL, EK HI BAAR RUN HOGA)
+// 📌 BUTTON HANDLER
 // ==================
 module.exports = function setupMenuHandler(conn, config) {
     const menuData = {
@@ -158,12 +157,14 @@ module.exports = function setupMenuHandler(conn, config) {
             } else if (receivedMsg.message.templateButtonReplyMessage) {
                 buttonId = receivedMsg.message.templateButtonReplyMessage.selectedId;
             } else if (receivedMsg.message.interactiveResponseMessage) {
-                buttonId = receivedMsg.message.interactiveResponseMessage.nativeFlowResponseMessage?.paramsJson;
-                if (buttonId) {
+                const params = receivedMsg.message.interactiveResponseMessage.nativeFlowResponseMessage?.paramsJson;
+                if (params) {
                     try {
-                        const parsed = JSON.parse(buttonId);
-                        buttonId = parsed.id || null;
-                    } catch { }
+                        const parsed = JSON.parse(params);
+                        buttonId = parsed.id || parsed.buttonId || null;
+                    } catch {
+                        buttonId = null;
+                    }
                 }
             }
 
@@ -175,7 +176,8 @@ module.exports = function setupMenuHandler(conn, config) {
                     senderID,
                     {
                         image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/kunzpz.png' },
-                        caption: menuData[buttonId]
+                        caption: menuData[buttonId],
+                        footer: "*👑 BILAL-MD WHATSAPP BOT 👑*" // ⚡ sub-menus me footer rehne de
                     },
                     { quoted: receivedMsg }
                 );
