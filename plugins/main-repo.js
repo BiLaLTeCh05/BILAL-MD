@@ -34,17 +34,17 @@ async (conn, mek, m, { from, reply }) => {
 
 > ${config.DESCRIPTION}`;
 
-        // ✅ Send image with buttons
+        // ✅ Send image with BUTTONS
         await conn.sendMessage(from, {
             image: { url: config.MENU_IMAGE_URL || "https://files.catbox.moe/kunzpz.png" },
             caption: style,
             footer: "👑 BILAL-MD BOT 👑",
-            templateButtons: [
-                { index: 1, urlButton: { displayText: "🔗 Open Repo", url: repoData.html_url } },
-                { index: 2, quickReplyButton: { displayText: `⭐ Stars (${repoData.stargazers_count})`, id: "stars_info" } },
-                { index: 3, quickReplyButton: { displayText: `🍴 Forks (${repoData.forks_count})`, id: "forks_info" } },
-                { index: 4, urlButton: { displayText: "📢 Join Channel", url: channelLink } }
-            ]
+            buttons: [
+                { buttonId: "stars_info", buttonText: { displayText: `⭐ Stars (${repoData.stargazers_count})` }, type: 1 },
+                { buttonId: "forks_info", buttonText: { displayText: `🍴 Forks (${repoData.forks_count})` }, type: 1 },
+                { buttonId: "channel_btn", buttonText: { displayText: "📢 Join Channel" }, type: 1 }
+            ],
+            headerType: 4
         }, { quoted: mek });
 
         // ✅ Optional: Send audio jingle
