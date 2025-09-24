@@ -2,129 +2,169 @@ const config = require('../config');
 const { cmd } = require('../command');
 
 cmd({
-    pattern: "menu5",
-    desc: "Show fancy carousel menu with channel button",
+    pattern: "menu",
+    desc: "Show interactive menu with buttons",
     category: "menu",
     react: "👑",
     filename: __filename
 }, async (conn, mek, m, { from }) => {
     try {
-        const channelLink = "https://whatsapp.com/channel/0029VaFgYtRLoKp3blEq4F3H"; // apna channel link
+        const menuCaption = `*╭━━━〔 👑 BILAL-MD 👑 〕━━━┈⊷*
+*┃👑 USER:* ${config.OWNER_NAME}
+*┃👑 DEVELOPER:* BiLAL
+*┃👑 PLATFORM:* LINUX
+*┃👑 MODE:* ${config.MODE}
+*┃👑 PREFIX:* ${config.PREFIX}
+*┃👑 VERSION:* 1.0
+*╰━━━━━━━━━━━━━━━┈⊷*
+*👉 SELECT YOUR MENU 👈*`;
 
-        const rainbow = (text) => {
-            const colors = ["🟥","🟧","🟨","🟩","🟦","🟪"];
-            return text.split("").map((ch,i)=> colors[i % colors.length] + ch).join("");
+        const contextInfo = {
+            mentionedJid: [m.sender],
+            forwardingScore: 999,
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+                newsletterJid: '120363296818107681@newsletter',
+                newsletterName: config.OWNER_NAME,
+                serverMessageId: 143
+            }
         };
 
-        await conn.sendMessage(from, {
-            carouselMessage: {
-                cards: [
-                    {
-                        header: {
-                            title: "👑✨ DOWNLOAD MENU ✨👑",
-                            hasMediaAttachment: true,
-                            imageMessage: { url: config.MENU_IMAGE_URL || "https://files.catbox.moe/kunzpz.png" }
+        // Buttons
+        const buttons = [
+            { buttonId: "download_menu", buttonText: { displayText: "📥 DOWNLOAD MENU" }, type: 1 },
+            { buttonId: "group_menu", buttonText: { displayText: "👥 GROUP MENU" }, type: 1 },
+            { buttonId: "user_menu", buttonText: { displayText: "🙋 USER MENU" }, type: 1 },
+            { buttonId: "ai_menu", buttonText: { displayText: "🤖 AI MENU" }, type: 1 },
+            { buttonId: "converter_menu", buttonText: { displayText: "🔄 CONVERTER MENU" }, type: 1 },
+            { buttonId: "xtra_menu", buttonText: { displayText: "⚡ XTRA MENU" }, type: 1 },
+            { buttonId: "main_menu", buttonText: { displayText: "🏠 MAIN MENU" }, type: 1 },
+            { buttonId: "support_channel", buttonText: { displayText: "📢 BILAL-MD SUPPORT" }, type: 1 },
+        ];
+
+        // Send Main Menu with Buttons
+        await conn.sendMessage(
+            from,
+            {
+                image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/kunzpz.png' },
+                caption: menuCaption,
+                footer: "*👑 BILAL-MD WHATSAPP BOT 👑*",
+                buttons: buttons,
+                headerType: 4,
+                contextInfo: contextInfo
+            },
+            { quoted: mek }
+        );
+
+        // Menu Data
+        const menuData = {
+            "download_menu": `*╭━━━〔 📥 DOWNLOAD MENU 〕━━━┈⊷*
+*┃🔰 FB*
+*┃🔰 TIKTOK*
+*┃🔰 INSTA*
+*┃🔰 APK*
+*┃🔰 IMG*
+*┃🔰 SONG*
+*┃🔰 PLAY*
+*┃🔰 VIDEO*
+*╰━━━━━━━━━━━━━━━┈⊷*`,
+
+            "group_menu": `*╭━━━〔 👥 GROUP MENU 〕━━━┈⊷*
+*┃🔰 GROUPLINK*
+*┃🔰 ADD*
+*┃🔰 REMOVE*
+*┃🔰 KICK*
+*┃🔰 PROMOTE*
+*┃🔰 DEMOTE*
+*┃🔰 TAGALL*
+*┃🔰 TAGADMINS*
+*┃🔰 INVITE*
+*╰━━━━━━━━━━━━━━━┈⊷*`,
+
+            "user_menu": `*╭━━━〔 🙋 USER MENU 〕━━━┈⊷*
+*┃🔰 BLOCK*
+*┃🔰 UNBLOCK*
+*┃🔰 FULLPP*
+*┃🔰 SETPP*
+*┃🔰 RESTART*
+*┃🔰 UPDATECMD*
+*╰━━━━━━━━━━━━━━━┈⊷*`,
+
+            "ai_menu": `*╭━━━〔 🤖 AI MENU 〕━━━┈⊷*
+*┃🔰 AI*
+*┃🔰 GPT*
+*┃🔰 BING*
+*┃🔰 IMAGINE*
+*╰━━━━━━━━━━━━━━━┈⊷*`,
+
+            "converter_menu": `*╭━━━〔 🔄 CONVERTER MENU 〕━━━┈⊷*
+*┃🔰 STICKER*
+*┃🔰 EMOJIMIX 😎+😂*
+*┃🔰 TAKE*
+*┃🔰 TOMP3*
+*┃🔰 FANCY*
+*┃🔰 TTS*
+*┃🔰 TRT*
+*┃🔰 BASE64*
+*┃🔰 UNBASE64*
+*╰━━━━━━━━━━━━━━━┈⊷*`,
+
+            "xtra_menu": `*╭━━━〔 ⚡ XTRA MENU 〕━━━┈⊷*
+*┃🔰 TIMENOW*
+*┃🔰 DATE*
+*┃🔰 COUNT*
+*┃🔰 CALCULATE*
+*┃🔰 NEWS*
+*┃🔰 MOVIE*
+*┃🔰 WEATHER*
+*╰━━━━━━━━━━━━━━━┈⊷*`,
+
+            "main_menu": `*╭━━━〔 🏠 MAIN MENU 〕━━━┈⊷*
+*┃🔰 PING*
+*┃🔰 ALIVE*
+*┃🔰 RUNTIME*
+*┃🔰 UPTIME*
+*┃🔰 REPO*
+*┃🔰 OWNER*
+*┃🔰 MENU*
+*┃🔰 MENU2*
+*┃🔰 RESTART*
+*╰━━━━━━━━━━━━━━━┈⊷*`,
+
+            "support_channel": `📢 *BILAL-MD SUPPORT CHANNEL:*\n👉 https://whatsapp.com/channel/0029VaFgYtRLoKp3blEq4F3H`
+        };
+
+        // Button Reply Handler
+        conn.ev.on("messages.upsert", async (msgData) => {
+            try {
+                const receivedMsg = msgData.messages[0];
+                if (!receivedMsg?.message?.buttonsResponseMessage) return;
+
+                const buttonId = receivedMsg.message.buttonsResponseMessage.selectedButtonId;
+                const senderID = receivedMsg.key.remoteJid;
+
+                if (menuData[buttonId]) {
+                    await conn.sendMessage(
+                        senderID,
+                        {
+                            image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/kunzpz.png' },
+                            caption: menuData[buttonId],
+                            contextInfo: contextInfo
                         },
-                        body: { 
-                            text: `╔═══🔥 ${rainbow("DOWNLOAD COMMANDS")} 🔥═══╗
-┃ 🔰 **${rainbow("FB")}**
-┃ 🔰 **${rainbow("TIKTOK")}**
-┃ 🔰 **${rainbow("INSTA")}**
-┃ 🔰 **${rainbow("APK")}**
-┃ 🔰 **${rainbow("IMG")}**
-┃ 🔰 **${rainbow("SONG")}**
-┃ 🔰 **${rainbow("PLAY")}**
-┃ 🔰 **${rainbow("VIDEO")}**
-╚════════════════════╝`
-                        },
-                        nativeFlowMessage: {
-                            buttons: [
-                                { name: "cta_url", buttonParamsJson: `{"display_text":"📢 BILAL-MD SUPPORT","url":"${channelLink}"}` },
-                                { name: "quick_reply", buttonParamsJson: '{"display_text":"🏠 MAIN MENU","id":"main_menu"}' }
-                            ]
-                        }
-                    },
-                    {
-                        header: {
-                            title: "⚡👥 GROUP MENU ⚡",
-                            hasMediaAttachment: true,
-                            imageMessage: { url: config.MENU_IMAGE_URL || "https://files.catbox.moe/kunzpz.png" }
-                        },
-                        body: { 
-                            text: `╔═══⚡ ${rainbow("GROUP COMMANDS")} ⚡═══╗
-┃ 🔰 **${rainbow("GROUPLINK")}**
-┃ 🔰 **${rainbow("ADD")}**
-┃ 🔰 **${rainbow("REMOVE")}**
-┃ 🔰 **${rainbow("KICK")}**
-┃ 🔰 **${rainbow("PROMOTE")}**
-┃ 🔰 **${rainbow("DEMOTE")}**
-┃ 🔰 **${rainbow("TAGALL")}**
-┃ 🔰 **${rainbow("TAGADMINS")}**
-┃ 🔰 **${rainbow("INVITE")}**
-╚════════════════════╝`
-                        },
-                        nativeFlowMessage: {
-                            buttons: [
-                                { name: "cta_url", buttonParamsJson: `{"display_text":"📢 BILAL-MD SUPPORT","url":"${channelLink}"}` },
-                                { name: "quick_reply", buttonParamsJson: '{"display_text":"🏠 MAIN MENU","id":"main_menu"}' }
-                            ]
-                        }
-                    },
-                    {
-                        header: {
-                            title: "🤖🌈 AI MENU 🌈🤖",
-                            hasMediaAttachment: true,
-                            imageMessage: { url: config.MENU_IMAGE_URL || "https://files.catbox.moe/kunzpz.png" }
-                        },
-                        body: { 
-                            text: `╔═══✨ ${rainbow("AI COMMANDS")} ✨═══╗
-┃ 🔰 **${rainbow("AI")}**
-┃ 🔰 **${rainbow("GPT")}**
-┃ 🔰 **${rainbow("BING")}**
-┃ 🔰 **${rainbow("IMAGINE")}**
-╚════════════════════╝`
-                        },
-                        nativeFlowMessage: {
-                            buttons: [
-                                { name: "cta_url", buttonParamsJson: `{"display_text":"📢 BILAL-MD SUPPORT","url":"${channelLink}"}` },
-                                { name: "quick_reply", buttonParamsJson: '{"display_text":"🏠 MAIN MENU","id":"main_menu"}' }
-                            ]
-                        }
-                    },
-                    {
-                        header: {
-                            title: "🏆👑 MAIN MENU 👑🏆",
-                            hasMediaAttachment: true,
-                            imageMessage: { url: config.MENU_IMAGE_URL || "https://files.catbox.moe/kunzpz.png" }
-                        },
-                        body: { 
-                            text: `╔═══👑 ${rainbow("MAIN COMMANDS")} 👑═══╗
-┃ 🔰 **${rainbow("PING")}**
-┃ 🔰 **${rainbow("ALIVE")}**
-┃ 🔰 **${rainbow("RUNTIME")}**
-┃ 🔰 **${rainbow("UPTIME")}**
-┃ 🔰 **${rainbow("REPO")}**
-┃ 🔰 **${rainbow("OWNER")}**
-┃ 🔰 **${rainbow("MENU")}**
-┃ 🔰 **${rainbow("MENU2")}**
-┃ 🔰 **${rainbow("MENU3")}**
-┃ 🔰 **${rainbow("MENU4")}**
-┃ 🔰 **${rainbow("MENU5")}**
-╚════════════════════╝`
-                        },
-                        nativeFlowMessage: {
-                            buttons: [
-                                { name: "cta_url", buttonParamsJson: `{"display_text":"📢 BILAL-MD SUPPORT","url":"${channelLink}"}` },
-                                { name: "quick_reply", buttonParamsJson: '{"display_text":"⬅️ BACK","id":"menu"}' }
-                            ]
-                        }
-                    }
-                ]
+                        { quoted: receivedMsg }
+                    );
+                }
+            } catch (e) {
+                console.log("Button handler error:", e);
             }
-        }, { quoted: mek });
+        });
 
     } catch (e) {
-        console.error("Fancy Menu with Channel Button Error:", e);
-        await conn.sendMessage(from, { text: `_BOT ERROR: MENU BUTTON FAILED 😓_` }, { quoted: mek });
+        console.error("ERROR:", e);
+        await conn.sendMessage(
+            from,
+            { text: `_BOT ERROR: MENU NOT SHOWING 😓_` },
+            { quoted: mek }
+        );
     }
 });
