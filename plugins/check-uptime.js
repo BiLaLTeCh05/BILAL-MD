@@ -12,7 +12,7 @@ cmd({
   try {
     const uptime = runtime(process.uptime());
 
-    const message = `⏱️ *BOT UPTIME:* ${uptime}`;
+    const message = `*👑 UPTIME:❯ ${uptime} 👑*`;
 
     await conn.sendMessage(from, {
       text: message
