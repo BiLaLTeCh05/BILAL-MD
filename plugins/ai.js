@@ -1,84 +1,169 @@
-const axios = require("axios");
-const fetch = require("node-fetch");
-const { cmd } = require("../command");
+const { cmd } = require('../command');
+const axios = require('axios');
 
-// =============================
-// 📌 GPT & GEMINI COMMAND
-// =============================
+/**
+ * 🤖 General AI Command
+ */
 cmd({
-    pattern: "gpt",
-    alias: ["ai", "chatgpt"],
-    desc: "Ask ChatGPT AI",
-    category: "ai",
+    pattern: "ai",
+    alias: ["bot", "dj", "gpt", "gpt4", "bing"],
+    desc: "Chat with an AI model",
+    category: "AI",
     react: "🤖",
     filename: __filename
-}, async (conn, m, store, { from, q, reply }) => {
+},
+async (conn, mek, m, { q, reply, react }) => {
     try {
-        if (!q) return reply("❌ Usage: *.gpt write a poem*");
+        if (!q) return reply("⚡ *Usage:* `.ai Hello`");
 
-        await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
+        const apiUrl = `https://lance-frank-asta.onrender.com/api/gpt?q=${encodeURIComponent(q)}`;
+        const { data } = await axios.get(apiUrl);
 
-        const response = await axios.get(
-            `https://api.dreaded.site/api/chatgpt?text=${encodeURIComponent(q)}`
-        );
-
-        if (response.data && response.data.success && response.data.result) {
-            const answer = response.data.result.prompt;
-            await conn.sendMessage(from, { text: answer }, { quoted: m });
-        } else {
-            reply("⚠️ GPT API se sahi response nahi aaya.");
+        if (!data?.message) {
+            await react("❌");
+            return reply("🚫 AI is taking a nap... try again later!");
         }
+
+        const caption = 
+`╭───🤖 *AI Model* ───╮
+│  
+│ 💬 ${data.message}
+│  
+╰──────────────────╯`;
+
+        await conn.sendMessage(
+            m.from,
+            {
+                image: { url: "https://files.catbox.moe/tbdd5d.jpg" }, // 🔗 you can replace with your bot logo/profile
+                caption,
+                contextInfo: {
+                    forwardingScore: 999,
+                    isForwarded: true,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: '120363420342566562@newsletter',
+                        newsletterName: '🤖 POPKID XTR',
+                        serverMessageId: '',
+                    },
+                },
+            },
+            { quoted: m }
+        );
+        await react("✅");
+
     } catch (e) {
-        console.error("GPT Error:", e.message);
-        reply("❌ GPT se error aagaya, baad me try karo.");
+        console.error("❌ Error in AI command:", e);
+        await react("❌");
+        reply("⚠️ Oops! Something went wrong with AI.");
     }
 });
 
+/**
+ * 🧠 OpenAI Command
+ */
+cmd({
+    pattern: "bing",
+    alias: ["chatgpt", "gpt3", "open-gpt"],
+    desc: "Chat with OpenAI",
+    category: "AI",
+    react: "🧠",
+    filename: __filename
+},
+async (conn, mek, m, { q, reply, react }) => {
+    try {
+        if (!q) return reply("⚡ *Usage:* `.openai Hello`");
+
+        const apiUrl = `https://vapis.my.id/api/openai?q=${encodeURIComponent(q)}`;
+        const { data } = await axios.get(apiUrl);
+
+        if (!data?.result) {
+            await react("❌");
+            return reply("🚫 OpenAI is unavailable, please retry.");
+        }
+
+        const caption = 
+`🧠 *OpenAI Response*
+━━━━━━━━━━━━━━━━━━━
+📜 ${data.result}
+━━━━━━━━━━━━━━━━━━━`;
+
+        await conn.sendMessage(
+            m.from,
+            {
+                image: { url: "https://files.catbox.moe/tbdd5d.jpg" }, // custom OpenAI-themed image
+                caption,
+                contextInfo: {
+                    forwardingScore: 999,
+                    isForwarded: true,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: '120363420342566562@newsletter',
+                        newsletterName: '🧠 POPKID XTR',
+                        serverMessageId: '',
+                    },
+                },
+            },
+            { quoted: m }
+        );
+        await react("✅");
+
+    } catch (e) {
+        console.error("❌ Error in OpenAI command:", e);
+        await react("❌");
+        reply("⚠️ Error occurred while contacting OpenAI.");
+    }
+});
+
+/**
+ * 🔮 DeepSeek Command
+ */
 cmd({
     pattern: "ai",
-    alias: ["ai2", "gem"],
-    desc: "Ask Gemini AI",
-    category: "ai",
-    react: "🤖",
+    alias: ["deep", "seekai"],
+    desc: "Chat with DeepSeek AI",
+    category: "AI",
+    react: "🔮",
     filename: __filename
-}, async (conn, m, store, { from, q, reply }) => {
+},
+async (conn, mek, m, { q, reply, react }) => {
     try {
-        if (!q) return reply("❌ Usage: *.gemini who are you*");
+        if (!q) return reply("⚡ *Usage:* `.deepseek Hello`");
 
-        await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
+        const apiUrl = `https://api.ryzendesu.vip/api/ai/deepseek?text=${encodeURIComponent(q)}`;
+        const { data } = await axios.get(apiUrl);
 
-        const apis = [
-            `https://vapis.my.id/api/gemini?q=${encodeURIComponent(q)}`,
-            `https://api.siputzx.my.id/api/ai/gemini-pro?content=${encodeURIComponent(q)}`,
-            `https://api.ryzendesu.vip/api/ai/gemini?text=${encodeURIComponent(q)}`,
-            `https://api.dreaded.site/api/gemini2?text=${encodeURIComponent(q)}`,
-            `https://api.giftedtech.my.id/api/ai/geminiai?apikey=gifted&q=${encodeURIComponent(q)}`,
-            `https://api.giftedtech.my.id/api/ai/geminiaipro?apikey=gifted&q=${encodeURIComponent(q)}`
-        ];
-
-        let answered = false;
-        for (const api of apis) {
-            try {
-                const res = await fetch(api);
-                const data = await res.json();
-
-                if (data.message || data.data || data.answer || data.result) {
-                    const answer =
-                        data.message || data.data || data.answer || data.result;
-                    await conn.sendMessage(from, { text: answer }, { quoted: m });
-                    answered = true;
-                    break;
-                }
-            } catch (e) {
-                continue;
-            }
+        if (!data?.answer) {
+            await react("❌");
+            return reply("🚫 DeepSeek is silent right now...");
         }
 
-        if (!answered) {
-            reply("⚠️ Saare Gemini APIs fail ho gaye.");
-        }
+        const caption = 
+`🔮✨ *DeepSeek Oracle* ✨🔮
+
+「 ${data.answer} 」
+
+───────────────`;
+
+        await conn.sendMessage(
+            m.from,
+            {
+                image: { url: "https://files.catbox.moe/tbdd5d.jpg" }, // mystical theme pic
+                caption,
+                contextInfo: {
+                    forwardingScore: 999,
+                    isForwarded: true,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: '120363420342566562@newsletter',
+                        newsletterName: '🔮 POPKID XTR',
+                        serverMessageId: '',
+                    },
+                },
+            },
+            { quoted: m }
+        );
+        await react("✅");
+
     } catch (e) {
-        console.error("Gemini Error:", e.message);
-        reply("❌ Gemini se error aagaya, baad me try karo.");
+        console.error("❌ Error in DeepSeek command:", e);
+        await react("❌");
+        reply("⚠️ Error occurred while contacting DeepSeek AI.");
     }
 });
