@@ -1,52 +1,58 @@
 const { cmd } = require('../command');
 
 cmd({
-    pattern: "out",
-    alias: ["ck", "kick", "remove"],
-    desc: "Removes all members with specific country code from the group",
+    pattern: "kick",
+    alias: ["out", "remove"],
+    desc: "Remove member by reply or by country code",
     category: "admin",
     react: "❌",
     filename: __filename
 },
-async (conn, mek, m, {
-    from, q, isGroup, isBotAdmins, reply, groupMetadata, senderNumber
-}) => {
-    // Check if the command is used in a group
-    if (!isGroup) return reply("*YEH COMMAND SIRF GROUPS ME USE KAREIN ☺️❤️*");
-
-    // Get the bot owner's number dynamically from conn.user.id
-    const botOwner = conn.user.id.split(":")[0];
-    if (senderNumber !== botOwner) {
-        return reply("*AP YE COMMAND USE NAHI KAR SAKTE 🥺❤️* \n *YEH COMMAND SIRF MERE LIE HAI ☺️❤️*");
-    }
-
-    // Check if the bot is an admin
-    if (!isBotAdmins) return reply("*PEHLE MUJHE IS GROUP ME ADMIN BANAO ☺️❤️*");
-
-    if (!q) return reply("*AGAR IS GROUP SE KISI MEMBER KO REMOVE KARNA HAI TO ESE KARE ☺️🌹* \n *.KICK 92327xxxx* \n *AGAR ESE JIS BHI MEMBER KA NUMBER LIKHO GE 🥺🌹* \n *TO WO IS GROUP SE REMOVE HO JAYE GA ☺️🌹*");
-
-    const countryCode = q.trim();
-    if (!/^\d+$/.test(countryCode)) {
-        return reply("*DUBARA KOSHISH KAREIN 🥺❤️*");
-    }
-
+async (conn, mek, m, { from, q, isGroup, isBotAdmins, reply, groupMetadata }) => {
     try {
-        const participants = await groupMetadata.participants;
-        const targets = participants.filter(
-            participant => participant.id.startsWith(countryCode) && 
-                         !participant.admin // Don't remove admins
-        );
+        if (!isGroup) return reply("*YEH COMMAND SIRF GROUPS ME USE KAREIN ☺️❤️*");
+        if (!isBotAdmins) return reply("*PEHLE MUJHE IS GROUP ME ADMIN BANAO ☺️❤️*");
 
-        if (targets.length === 0) {
-            return reply(`*IS GROUP ME YE MEMBER NAHI HAI 🥺🌹* +${countryCode}`);
+        let targetIds = [];
+
+        // Agar kisi member ke msg ko reply karke command use kare
+        if (m.quoted) {
+            const quotedSender = m.quoted.sender || m.quoted.participant || m.quoted.key.participant;
+            if (quotedSender) targetIds.push(quotedSender);
+        } 
+        // Agar country code diya ho (e.g .kick 92)
+        else if (q) {
+            const countryCode = q.trim();
+            if (!/^\d+$/.test(countryCode)) {
+                return reply("*DUBARA KOSHISH KAREIN 🥺❤️* (sirf numbers likho)");
+            }
+
+            const participants = groupMetadata.participants || [];
+            const targets = participants.filter(p => {
+                const num = (p.id || p.jid).split("@")[0];
+                return num.startsWith(countryCode) && !(p.admin === "admin" || p.admin === "superadmin");
+            });
+
+            if (targets.length === 0) {
+                return reply(`*IS GROUP ME KOI MEMBER NAHI HAI JISKA NUMBER +${countryCode} SE START HOTA HAI 🥺🌹*`);
+            }
+
+            targetIds = targets.map(p => p.id || p.jid);
+        } 
+        else {
+            return reply("*KISI MEMBER KO REPLY KARKE `.kick` LIKHO YA PHIR COUNTRY CODE DO ☺️❤️*");
         }
 
-        const jids = targets.map(p => p.id);
-        await conn.groupParticipantsUpdate(from, jids, "remove");
-        
-        reply(`YEH ${targets.length} MEMBER +${countryCode} IS GROUP SE REMOVE HO CHUKA HAI 🥺🌹*`);
-    } catch (error) {
-        console.error("*DUBARA KOSHISH KAREIN 🥺❤️*", error);
-        reply("*DUBARA KOSHISH KAREIN 🥺❤️* " + error.message);
+        await conn.groupParticipantsUpdate(from, targetIds, "remove");
+
+        const mentions = targetIds.map(j => "@" + j.split("@")[0]).join("\n");
+        await conn.sendMessage(from, {
+            text: `✅ REMOVE HO GAYA:\n${mentions}`,
+            mentions: targetIds
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.error("Kick Command Error:", e);
+        reply("❌ Error: " + e.message);
     }
 });
