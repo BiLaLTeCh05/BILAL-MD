@@ -7,6 +7,7 @@ const fetch = require('node-fetch');
 
 const envPath = path.join(__dirname, "../.env");
 
+// 🔹 Heroku Variable Update
 async function updateHerokuEnv(key, value) {
     const apiKey = process.env.HEROKU_API_KEY;
     const appName = process.env.HEROKU_APP_NAME;
@@ -32,6 +33,7 @@ async function updateHerokuEnv(key, value) {
     }
 }
 
+// 🔹 Local .env Update
 async function updateEnvVariable(key, value) {
     let env = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8') : '';
     const regex = new RegExp(`^${key}=.*`, "m");
@@ -53,15 +55,16 @@ async function updateEnvVariable(key, value) {
     await updateHerokuEnv(key, value);
 }
 
+// 🔹 Bot Restart
 async function restartBot(conn, from, msg) {
     await conn.sendMessage(from, { text: "♻️ Changes applied. Restarting bot..." }, { quoted: msg });
     process.exit(0);
 }
 
+// 🔹 Button Sender
 function sendToggleMessage(conn, m, from, key, label, current) {
     return conn.sendMessage(from, {
-        text: `⚙️ *${label}*  
-Current: ${current ? "✅ ON" : "❌ OFF"}`,
+        text: `⚙️ *${label}*\nCurrent: ${current ? "✅ ON" : "❌ OFF"}`,
         footer: "Tap below to toggle",
         buttons: [
             { buttonId: `set_${key}_true`, buttonText: { displayText: "ON ✅" }, type: 1 },
@@ -71,17 +74,27 @@ Current: ${current ? "✅ ON" : "❌ OFF"}`,
     }, { quoted: m });
 }
 
+// ======================
+// ⚙️ ENV COMMAND
+// ======================
 cmd({
     pattern: "env",
     alias: ["config", "settings"],
-    desc: "Bot config control panel (ON/OFF buttons)",
+    desc: "Bot config control panel (ON/OFF buttons + Owner set)",
     category: "owner",
     react: "⚙️",
     filename: __filename
 },
-async (conn, m, store, { from, reply, isOwner }) => {
-    if (!isOwner) return reply("⚠️ Command reserved for *Owner* only.");
+async (conn, m, store, { from, reply }) => {
+    const senderNum = m.sender.split("@")[0];
+    const owners = (config.OWNER_NUMBER || []).map(n => n.toString());
 
+    // ✅ Owner check
+    if (!owners.includes(senderNum)) {
+        return reply("⚠️ Command reserved for *Owner* only.");
+    }
+
+    // 🔹 Options
     const options = [
         { key: "AUTO_REACT", label: "Auto React" },
         { key: "ANTI_LINK", label: "Anti Link" },
@@ -95,14 +108,19 @@ async (conn, m, store, { from, reply, isOwner }) => {
         { key: "READ_CMD", label: "Read CMD" },
         { key: "PUBLIC_MODE", label: "Public Mode" },
         { key: "AUTO_TYPING", label: "Auto Typing" },
-        { key: "AUTO_RECORDING", label: "Auto Recording" }
+        { key: "AUTO_RECORDING", label: "Auto Recording" },
     ];
 
-    // Har variable ke liye alag message bhej do
+    // 🔹 Send toggles
     for (const opt of options) {
         const current = config[opt.key] && config[opt.key].toString().toLowerCase() === "true";
         await sendToggleMessage(conn, m, from, opt.key, opt.label, current);
     }
+
+    // 🔹 OWNER_NUMBER update command
+    await conn.sendMessage(from, {
+        text: `📌 *Set Owner Number*\nCurrent: ${owners.join(", ")}\n\nReply this message with:\n> .setowner 923001234567,923009876543`
+    }, { quoted: m });
 
     // Button listener
     conn.ev.on("messages.upsert", async (msgData) => {
@@ -118,4 +136,32 @@ async (conn, m, store, { from, reply, isOwner }) => {
 
         setTimeout(() => restartBot(conn, from, msg), 2000);
     });
+});
+
+// ======================
+// ⚙️ .setowner COMMAND
+// ======================
+cmd({
+    pattern: "setowner",
+    desc: "Update bot owner number(s) via Heroku",
+    category: "owner",
+    react: "👑",
+    filename: __filename
+},
+async (conn, m, store, { from, reply, args }) => {
+    const senderNum = m.sender.split("@")[0];
+    const owners = (config.OWNER_NUMBER || []).map(n => n.toString());
+
+    if (!owners.includes(senderNum)) {
+        return reply("⚠️ Command reserved for *Owner* only.");
+    }
+
+    if (!args[0]) return reply("❌ Usage: .setowner 923001234567,923009876543");
+
+    const newOwners = args[0].split(",").map(n => n.trim());
+
+    await updateEnvVariable("OWNER_NUMBER", newOwners.join(","));
+    await conn.sendMessage(from, { text: `✅ Owner updated:\n*${newOwners.join(", ")}*` }, { quoted: m });
+
+    setTimeout(() => restartBot(conn, from, m), 2000);
 });
