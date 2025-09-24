@@ -19,19 +19,7 @@ cmd({
 *┃👑│ VERSION :❯* 1.0
 *┃👑╰──────────────*
 *╰━━━━━━━━━━━━━━━┈⊷*
-*╭━━〔 👑 MENU 👑 〕━━┈⊷*
-*┃🔰╭─────────────·๏*
-*┃🔰│ ❮1❯ DOWNLOAD MENU*
-*┃🔰│ ❮2❯ GROUP MENU*
-*┃🔰│ ❮3❯ USER MENU*
-*┃🔰│ ❮4❯ Ai MENU*
-*┃🔰│ ❮5❯ CONVERTER MENU*
-*┃🔰│ ❮6❯ XTRA MENU*
-*┃🔰│ ❮7❯ MAiN MENU*
-*┃🔰╰───────────┈⊷*
-*╰──────────────┈⊷*
-*_FIRST IMPORTANT AP MERE IS MENU WALW MESSAGE KO MENTION LAZMI KARE LAZMIIII KAREIN AUR APKO JO BHI MENU KE COMMANDS CHAHYE AP US MENU KA NUMBER LIKHE JESE AP NUMBER ❮1❯ LIKHO GE TO ❮DOWNLOAD MENU❯ KE COMMANDS SHOW HOGE AUR AGAR AP NUMBER ❮2❯ LIKHO GE TO ❮GROUP MENU❯ KE COMMANDS SHOW GE AUR AGAR AP NUMBER  ❮3❯ LIKHE GE TO AP KO JIS MENU KE COMMANDS CHAHYE AP US MENU KA NUMBER LIKHE SHYD APKO SAMAJH AA GAYI HOGI KE KESE MENU KE COMMANDS SHOW JAYE GE 🥰🦋🌹_*
-*👑 BILAL-MD WHATSAPP BOT 👑*`;
+*👑 SELECT YOUR MENU 👑*`;
 
         const contextInfo = {
             mentionedJid: [m.sender],
@@ -47,13 +35,13 @@ cmd({
                 caption: menuCaption,
                 contextInfo: contextInfo,
                 buttons: [
-                    { buttonId: "1", buttonText: { displayText: "📥 DOWNLOAD MENU" }, type: 1 },
-                    { buttonId: "2", buttonText: { displayText: "👥 GROUP MENU" }, type: 1 },
-                    { buttonId: "3", buttonText: { displayText: "🙋 USER MENU" }, type: 1 },
-                    { buttonId: "4", buttonText: { displayText: "🤖 AI MENU" }, type: 1 },
-                    { buttonId: "5", buttonText: { displayText: "🔄 CONVERTER MENU" }, type: 1 },
-                    { buttonId: "6", buttonText: { displayText: "✨ XTRA MENU" }, type: 1 },
-                    { buttonId: "7", buttonText: { displayText: "🏠 MAIN MENU" }, type: 1 }
+                    { buttonId: "1", buttonText: { displayText: "👑 DOWNLOAD MENU👑" }, type: 1 },
+                    { buttonId: "2", buttonText: { displayText: "👑 GROUP MENU👑" }, type: 1 },
+                    { buttonId: "3", buttonText: { displayText: "👑 USER MENU 👑" }, type: 1 },
+                    { buttonId: "4", buttonText: { displayText: "👑 AI MENU 👑" }, type: 1 },
+                    { buttonId: "5", buttonText: { displayText: "👑 CONVERT MENU 👑" }, type: 1 },
+                    { buttonId: "6", buttonText: { displayText: "👑 XTRA MENU 👑" }, type: 1 },
+                    { buttonId: "7", buttonText: { displayText: "👑 MAIN MENU 👑" }, type: 1 }
                 ],
                 headerType: 4
             },
@@ -107,6 +95,7 @@ cmd({
 ┃👑│ • unblock 
 ┃👑│ • fullpp 
 ┃👑│ • setpp 
+┃👑│ • getpp 
 ┃👑│ • restart
 ┃👑│ • updatecmd
 *╰━━━━━━━━━━━━━━━┈⊷*
@@ -125,14 +114,13 @@ cmd({
                 content: `*╭━━━〔 👑 CONVERTER 👑 〕━━━┈⊷*
 ┃👑╭──────────────
 ┃👑│ • sticker 
-┃👑│ • emojimix 😎+😂
+┃👑│ • ss
 ┃👑│ • take 
 ┃👑│ • tomp3 
 ┃👑│ • fancy 
 ┃👑│ • tts 
 ┃👑│ • trt 
-┃👑│ • base64 
-┃👑│ • unbase64 
+┃👑│ • getpp 
 *╰━━━━━━━━━━━━━━━┈⊷*
 *👑 BILAL-MD WHATSAPP BOT 👑*`
             },
