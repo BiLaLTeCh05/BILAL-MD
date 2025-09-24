@@ -64,7 +64,6 @@ cmd({
     }
 });
 
-
 // ==================
 // 📌 BUTTON HANDLER (GLOBAL, EK HI BAAR RUN HOGA)
 // ==================
@@ -146,13 +145,29 @@ module.exports = function setupMenuHandler(conn, config) {
         "support_channel": `📢 *BILAL-MD SUPPORT CHANNEL:*\n👉 https://whatsapp.com/channel/0029VaFgYtRLoKp3blEq4F3H`
     };
 
-    // Ek hi listener
+    // ✅ Button Click Listener
     conn.ev.on("messages.upsert", async (msgData) => {
         try {
             const receivedMsg = msgData.messages[0];
-            if (!receivedMsg?.message?.buttonsResponseMessage) return;
+            if (!receivedMsg?.message) return;
 
-            const buttonId = receivedMsg.message.buttonsResponseMessage.selectedButtonId;
+            let buttonId;
+
+            if (receivedMsg.message.buttonsResponseMessage) {
+                buttonId = receivedMsg.message.buttonsResponseMessage.selectedButtonId;
+            } else if (receivedMsg.message.templateButtonReplyMessage) {
+                buttonId = receivedMsg.message.templateButtonReplyMessage.selectedId;
+            } else if (receivedMsg.message.interactiveResponseMessage) {
+                buttonId = receivedMsg.message.interactiveResponseMessage.nativeFlowResponseMessage?.paramsJson;
+                if (buttonId) {
+                    try {
+                        const parsed = JSON.parse(buttonId);
+                        buttonId = parsed.id || null;
+                    } catch { }
+                }
+            }
+
+            if (!buttonId) return;
             const senderID = receivedMsg.key.remoteJid;
 
             if (menuData[buttonId]) {
@@ -160,8 +175,7 @@ module.exports = function setupMenuHandler(conn, config) {
                     senderID,
                     {
                         image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/kunzpz.png' },
-                        caption: menuData[buttonId],
-                        contextInfo: {}
+                        caption: menuData[buttonId]
                     },
                     { quoted: receivedMsg }
                 );
