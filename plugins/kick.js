@@ -1,54 +1,22 @@
-const { cmd } = require('../command');
-const isAdmin = require('../lib/isAdmin');
+let handler = async (m, { conn, usedPrefix, command }) => {
 
-cmd({
-    pattern: "kick",
-    alias: ["remove"],
-    desc: "Kick user(s) from group (admin only)",
-    category: "group",
-    react: "👢",
-    filename: __filename
-},
-async (conn, mek, m, { from, reply, sender }) => {
-    try {
-        // Check if bot and sender are admins
-        const { isSenderAdmin, isBotAdmin } = await isAdmin(conn, from, sender);
+if (!m.mentionedJid[0] && !m.quoted) return m.reply(✳️ ${mssg.useCmd}\n\n*${usedPrefix + command}* @tag)
+let user = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted.sender
+if (conn.user.jid.includes(user)) return m.reply(✳️ I can't do a auto kick)
 
-        if (!isBotAdmin) return reply("⚠️ Please make me *Admin* first.");
-        if (!isSenderAdmin) return reply("⚠️ Only *Group Admins* can use this command.");
+await conn.groupParticipantsUpdate(m.chat, [user], 'remove')
+m.reply(✅ ${mssg.kick})
 
-        const ctxInfo = mek.message?.extendedTextMessage?.contextInfo || {};
-        let usersToKick = [];
+}
 
-        // Mentioned users
-        if (ctxInfo.mentionedJid && ctxInfo.mentionedJid.length > 0) {
-            usersToKick = ctxInfo.mentionedJid;
-        } 
-        // Replied user
-        else if (ctxInfo.participant) {
-            usersToKick = [ctxInfo.participant];
-        }
+handler.help = ['kick @user']
+handler.tags = ['group']
+handler.command = ['kick', 'k']
+handler.admin = true
+handler.group = true
+handler.botAdmin = true
 
-        if (usersToKick.length === 0) {
-            return reply("⚠️ Please *mention* the user or *reply* to their message to kick.");
-        }
+export default handler
 
-        // Prevent bot from kicking itself
-        const botId = conn.user.id.split(':')[0] + '@s.whatsapp.net';
-        if (usersToKick.includes(botId)) {
-            return reply("🤖 I can’t kick myself!");
-        }
+agar me is cmmand ko direct plugins/kick.js me add kr do to yeh work kre ga
 
-        // Execute kick
-        await conn.groupParticipantsUpdate(from, usersToKick, "remove");
-
-        await conn.sendMessage(from, {
-            text: `👢 Removed: ${usersToKick.map(u => `@${u.split('@')[0]}`).join(', ')}`,
-            mentions: usersToKick
-        }, { quoted: mek });
-
-    } catch (err) {
-        console.error("Kick command error:", err);
-        reply("❌ Failed to kick user(s). Maybe I’m not admin or the target is an admin.");
-    }
-});
