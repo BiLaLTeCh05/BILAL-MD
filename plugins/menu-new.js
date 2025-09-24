@@ -1,6 +1,9 @@
 const config = require('../config');
 const { cmd } = require('../command');
 
+// ==================
+// 📌 MENU COMMAND
+// ==================
 cmd({
     pattern: "menu",
     desc: "Show interactive menu with buttons",
@@ -42,7 +45,7 @@ cmd({
             { buttonId: "support_channel", buttonText: { displayText: "📢 BILAL-MD SUPPORT" }, type: 1 },
         ];
 
-        // Send Main Menu with Buttons
+        // Send Main Menu
         await conn.sendMessage(
             from,
             {
@@ -55,10 +58,19 @@ cmd({
             },
             { quoted: mek }
         );
+    } catch (e) {
+        console.error("ERROR:", e);
+        await conn.sendMessage(from, { text: `_BOT ERROR: MENU NOT SHOWING 😓_` }, { quoted: mek });
+    }
+});
 
-        // Menu Data
-        const menuData = {
-            "download_menu": `*╭━━━〔 📥 DOWNLOAD MENU 〕━━━┈⊷*
+
+// ==================
+// 📌 BUTTON HANDLER (GLOBAL, EK HI BAAR RUN HOGA)
+// ==================
+module.exports = function setupMenuHandler(conn, config) {
+    const menuData = {
+        "download_menu": `*╭━━━〔 📥 DOWNLOAD MENU 〕━━━┈⊷*
 *┃🔰 FB*
 *┃🔰 TIKTOK*
 *┃🔰 INSTA*
@@ -69,7 +81,7 @@ cmd({
 *┃🔰 VIDEO*
 *╰━━━━━━━━━━━━━━━┈⊷*`,
 
-            "group_menu": `*╭━━━〔 👥 GROUP MENU 〕━━━┈⊷*
+        "group_menu": `*╭━━━〔 👥 GROUP MENU 〕━━━┈⊷*
 *┃🔰 GROUPLINK*
 *┃🔰 ADD*
 *┃🔰 REMOVE*
@@ -81,7 +93,7 @@ cmd({
 *┃🔰 INVITE*
 *╰━━━━━━━━━━━━━━━┈⊷*`,
 
-            "user_menu": `*╭━━━〔 🙋 USER MENU 〕━━━┈⊷*
+        "user_menu": `*╭━━━〔 🙋 USER MENU 〕━━━┈⊷*
 *┃🔰 BLOCK*
 *┃🔰 UNBLOCK*
 *┃🔰 FULLPP*
@@ -90,14 +102,14 @@ cmd({
 *┃🔰 UPDATECMD*
 *╰━━━━━━━━━━━━━━━┈⊷*`,
 
-            "ai_menu": `*╭━━━〔 🤖 AI MENU 〕━━━┈⊷*
+        "ai_menu": `*╭━━━〔 🤖 AI MENU 〕━━━┈⊷*
 *┃🔰 AI*
 *┃🔰 GPT*
 *┃🔰 BING*
 *┃🔰 IMAGINE*
 *╰━━━━━━━━━━━━━━━┈⊷*`,
 
-            "converter_menu": `*╭━━━〔 🔄 CONVERTER MENU 〕━━━┈⊷*
+        "converter_menu": `*╭━━━〔 🔄 CONVERTER MENU 〕━━━┈⊷*
 *┃🔰 STICKER*
 *┃🔰 EMOJIMIX 😎+😂*
 *┃🔰 TAKE*
@@ -109,7 +121,7 @@ cmd({
 *┃🔰 UNBASE64*
 *╰━━━━━━━━━━━━━━━┈⊷*`,
 
-            "xtra_menu": `*╭━━━〔 ⚡ XTRA MENU 〕━━━┈⊷*
+        "xtra_menu": `*╭━━━〔 ⚡ XTRA MENU 〕━━━┈⊷*
 *┃🔰 TIMENOW*
 *┃🔰 DATE*
 *┃🔰 COUNT*
@@ -119,7 +131,7 @@ cmd({
 *┃🔰 WEATHER*
 *╰━━━━━━━━━━━━━━━┈⊷*`,
 
-            "main_menu": `*╭━━━〔 🏠 MAIN MENU 〕━━━┈⊷*
+        "main_menu": `*╭━━━〔 🏠 MAIN MENU 〕━━━┈⊷*
 *┃🔰 PING*
 *┃🔰 ALIVE*
 *┃🔰 RUNTIME*
@@ -131,40 +143,31 @@ cmd({
 *┃🔰 RESTART*
 *╰━━━━━━━━━━━━━━━┈⊷*`,
 
-            "support_channel": `📢 *BILAL-MD SUPPORT CHANNEL:*\n👉 https://whatsapp.com/channel/0029VaFgYtRLoKp3blEq4F3H`
-        };
+        "support_channel": `📢 *BILAL-MD SUPPORT CHANNEL:*\n👉 https://whatsapp.com/channel/0029VaFgYtRLoKp3blEq4F3H`
+    };
 
-        // Button Reply Handler
-        conn.ev.on("messages.upsert", async (msgData) => {
-            try {
-                const receivedMsg = msgData.messages[0];
-                if (!receivedMsg?.message?.buttonsResponseMessage) return;
+    // Ek hi listener
+    conn.ev.on("messages.upsert", async (msgData) => {
+        try {
+            const receivedMsg = msgData.messages[0];
+            if (!receivedMsg?.message?.buttonsResponseMessage) return;
 
-                const buttonId = receivedMsg.message.buttonsResponseMessage.selectedButtonId;
-                const senderID = receivedMsg.key.remoteJid;
+            const buttonId = receivedMsg.message.buttonsResponseMessage.selectedButtonId;
+            const senderID = receivedMsg.key.remoteJid;
 
-                if (menuData[buttonId]) {
-                    await conn.sendMessage(
-                        senderID,
-                        {
-                            image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/kunzpz.png' },
-                            caption: menuData[buttonId],
-                            contextInfo: contextInfo
-                        },
-                        { quoted: receivedMsg }
-                    );
-                }
-            } catch (e) {
-                console.log("Button handler error:", e);
+            if (menuData[buttonId]) {
+                await conn.sendMessage(
+                    senderID,
+                    {
+                        image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/kunzpz.png' },
+                        caption: menuData[buttonId],
+                        contextInfo: {}
+                    },
+                    { quoted: receivedMsg }
+                );
             }
-        });
-
-    } catch (e) {
-        console.error("ERROR:", e);
-        await conn.sendMessage(
-            from,
-            { text: `_BOT ERROR: MENU NOT SHOWING 😓_` },
-            { quoted: mek }
-        );
-    }
-});
+        } catch (e) {
+            console.log("Button handler error:", e);
+        }
+    });
+};
