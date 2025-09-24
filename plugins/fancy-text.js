@@ -8,9 +8,10 @@ cmd({
   desc: "Convert text into various fonts.",
   category: "tools",
   filename: __filename
-}, async (conn, m, store, { from, args, q, reply }) => {
+}, async (conn, m, store, { from, args, reply }) => {
   try {
-    const text = q || (args && args.length > 0 ? args.join(" ") : null);
+    // args ko handle karo
+    const text = args && args.length > 0 ? args.join(" ") : null;
 
     if (!text) {
       return reply(
@@ -32,12 +33,16 @@ cmd({
 
     // Sirf pehle 30 fonts bhejna
     const limit = 30;
-    let count = 0;
+    let msg = `🌹 *Fancy Text Generator* 🌹\n\n`;
+    let count = 1;
+
     for (const [, styled] of fonts) {
-      if (count >= limit) break;
-      await conn.sendMessage(from, { text: styled }, { quoted: m });
+      if (count > limit) break;
+      msg += `${count}. ${styled}\n`;
       count++;
     }
+
+    await conn.sendMessage(from, { text: msg }, { quoted: m });
 
   } catch (error) {
     console.error("Fancy command error:", error.message);
