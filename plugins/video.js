@@ -3,7 +3,7 @@ const yts = require('yt-search');
 const { cmd } = require('../command');
 
 // =============================
-// 📌 VIDEO DOWNLOAD COMMAND
+// 📌 VIDEO DOWNLOAD COMMAND (manual use)
 // =============================
 cmd({
     pattern: "video",
@@ -36,9 +36,7 @@ cmd({
 
         const res = await axios.get(apiUrl, {
             timeout: 30000,
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-            }
+            headers: { "User-Agent": "Mozilla/5.0" }
         });
 
         if (!res.data || !res.data.result || !res.data.result.download) {
@@ -60,3 +58,51 @@ cmd({
         reply("❌ Failed to download video. Try again later.");
     }
 });
+
+// =============================
+// 📌 AUTO YOUTUBE URL HANDLER
+// =============================
+module.exports = function setupYoutubeAuto(conn) {
+    conn.ev.on("messages.upsert", async (msgData) => {
+        try {
+            const msg = msgData.messages[0];
+            if (!msg?.message?.conversation) return;
+
+            const text = msg.message.conversation;
+            if (!text.includes("youtube.com") && !text.includes("youtu.be")) return;
+
+            const from = msg.key.remoteJid;
+            const url = text.trim();
+
+            // Inform user
+            await conn.sendMessage(from, {
+                text: `🎬 *YouTube Link Detected!*\n⏳ Downloading video...`
+            }, { quoted: msg });
+
+            // API call
+            const apiUrl = `https://izumiiiiiiii.dpdns.org/downloader/youtube?url=${encodeURIComponent(url)}&format=mp4`;
+
+            const res = await axios.get(apiUrl, {
+                timeout: 30000,
+                headers: { "User-Agent": "Mozilla/5.0" }
+            });
+
+            if (!res.data || !res.data.result || !res.data.result.download) {
+                return conn.sendMessage(from, { text: "⚠️ API failed to return a valid video link." }, { quoted: msg });
+            }
+
+            const videoData = res.data.result;
+
+            // Send video
+            await conn.sendMessage(from, {
+                video: { url: videoData.download },
+                mimetype: "video/mp4",
+                fileName: `${videoData.title || 'youtube-video'}.mp4`,
+                caption: `✅ *Auto Download Complete*\n📌 Title: ${videoData.title || 'Unknown'}`
+            }, { quoted: msg });
+
+        } catch (e) {
+            console.error("Auto YouTube download error:", e);
+        }
+    });
+};
