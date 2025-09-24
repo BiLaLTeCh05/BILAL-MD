@@ -1,56 +1,46 @@
 const { cmd } = require('../command');
-const ytdl = require('ytdl-core');
-const fs = require('fs');
-const path = require('path');
-const ytSearch = require('yt-search');
+const yts = require('yt-search');
+const axios = require('axios');
 
 cmd({
-    pattern: "play12",
-    alias: ["song", "yt"],
-    desc: "Download audio from YouTube by link or search query",
-    category: "download",
-    react: "🎶",
-    filename: __filename
+  pattern: "play12",
+  alias: ["song"],
+  desc: "Download songs from YouTube",
+  category: "media",
+  react: "🎵",
+  filename: __filename
 },
-async (conn, mek, m, { from, q, reply }) => {
-    try {
-        if (!q) return reply("⚠️ Please give me a YouTube link or song name.\nExample: *.play pasoori*");
+async (conn, mek, m, { from, reply }) => {
+  try {
+    const text = m.body ? m.body.trim().split(" ").slice(1).join(" ") : "";
+    if (!text) return reply("🎶 Please tell me the *song name*.\nExample: .play Shape of You");
 
-        let url = q.trim();
+    const { videos } = await yts(text);
+    if (!videos || videos.length === 0) return reply("❌ No songs found!");
 
-        // Agar link valid nahi hai to YouTube search karo
-        if (!ytdl.validateURL(url)) {
-            reply("🔍 Searching on YouTube...");
-            const search = await ytSearch(url);
-            if (!search.videos.length) return reply("❌ No results found.");
-            url = search.videos[0].url; // top result
-        }
+    const video = videos[0];
+    const urlYt = video.url;
 
-        const info = await ytdl.getInfo(url);
-        const title = info.videoDetails.title;
-        const filePath = path.join(__dirname, "../temp", `${Date.now()}.mp3`);
+    await reply("_⏳ Please wait, downloading your song..._");
 
-        const audioStream = ytdl(url, {
-            filter: 'audioonly',
-            quality: 'highestaudio'
-        });
+    const response = await axios.get(`https://apis-keith.vercel.app/download/dlmp3?url=${urlYt}`);
+    const data = response.data;
 
-        const writeStream = fs.createWriteStream(filePath);
-        audioStream.pipe(writeStream);
-
-        writeStream.on("finish", async () => {
-            await conn.sendMessage(from, {
-                audio: fs.readFileSync(filePath),
-                mimetype: 'audio/mpeg',
-                fileName: `${title}.mp3`
-            }, { quoted: mek });
-
-            fs.unlinkSync(filePath); // temp delete
-        });
-
-        reply(`⬇️ Downloading: *${title}*`);
-    } catch (e) {
-        console.error("Play Command Error:", e);
-        reply("❌ Error: " + e.message);
+    if (!data || !data.status || !data.result || !data.result.downloadUrl) {
+      return reply("⚠️ Failed to fetch audio from API. Try again later.");
     }
+
+    const audioUrl = data.result.downloadUrl;
+    const title = data.result.title;
+
+    await conn.sendMessage(from, {
+      audio: { url: audioUrl },
+      mimetype: "audio/mpeg",
+      fileName: `${title}.mp3`
+    }, { quoted: mek });
+
+  } catch (err) {
+    console.error("Play command error:", err);
+    reply("❌ Download failed. Please try again later.");
+  }
 });
