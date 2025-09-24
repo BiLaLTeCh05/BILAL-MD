@@ -3,41 +3,48 @@ const isAdmin = require('../lib/isAdmin');
 
 cmd({
     pattern: "kick",
-    alias: ["remove", "k"],
-    desc: "Kick group members (admin only)",
+    alias: ["remove"],
+    desc: "Remove a user from the group (admin only)",
     category: "group",
     react: "👢",
     filename: __filename
 }, 
-async (conn, mek, m, { from, reply, sender }) => {
+async (conn, mek, m, { from, reply, sender, participants }) => {
     try {
+        // Check admin rights
         const { isSenderAdmin, isBotAdmin } = await isAdmin(conn, from, sender);
 
-        if (!isBotAdmin) return reply("⚠️ Please make me *Admin* first.");
+        if (!isBotAdmin) return reply("⚠️ Please make the bot an *Admin* first.");
         if (!isSenderAdmin) return reply("⚠️ Only *Group Admins* can use this command.");
 
-        // Find user (mention or reply)
-        const ctxInfo = mek.message?.extendedTextMessage?.contextInfo || {};
-        const mentioned = Array.isArray(ctxInfo.mentionedJid) && ctxInfo.mentionedJid.length > 0 ? ctxInfo.mentionedJid : [];
-        const replied = ctxInfo.participant ? [ctxInfo.participant] : [];
+        let usersToKick = [];
 
-        const usersToKick = mentioned.length > 0 ? mentioned : replied;
+        // If user mentioned someone
+        const ctxInfo = mek.message?.extendedTextMessage?.contextInfo || {};
+        if (ctxInfo.mentionedJid && ctxInfo.mentionedJid.length > 0) {
+            usersToKick = ctxInfo.mentionedJid;
+        }
+        // If user replied to someone's message
+        else if (ctxInfo.participant) {
+            usersToKick = [ctxInfo.participant];
+        }
 
         if (usersToKick.length === 0) {
-            return reply("⚠️ Please reply to a message or mention the user to kick.");
+            return reply("⚠️ Please reply to a message or mention a user to kick!");
         }
 
-        // Prevent bot from kicking itself
-        const botId = conn.user.id.split(":")[0] + "@s.whatsapp.net";
+        // Bot ka apna ID
+        const botId = conn.user.id.split(':')[0] + "@s.whatsapp.net";
         if (usersToKick.includes(botId)) {
-            return reply("😅 I can't kick myself!");
+            return reply("🤖 I can't kick myself!");
         }
 
-        // Kick members
+        // Kick action
         await conn.groupParticipantsUpdate(from, usersToKick, "remove");
 
-        await conn.sendMessage(from, { 
-            text: `✅ Removed: ${usersToKick.map(jid => "@" + jid.split("@")[0]).join(", ")}`,
+        // Confirmation message
+        await conn.sendMessage(from, {
+            text: `✅ Kicked: ${usersToKick.map(j => "@" + j.split("@")[0]).join(", ")}`,
             mentions: usersToKick
         }, { quoted: mek });
 
