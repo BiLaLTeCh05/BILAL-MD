@@ -1,10 +1,38 @@
 const fs = require('fs');
 const path = require('path');
+const dotenv = require('dotenv');
 const config = require('../config');
 const { cmd } = require('../command');
+const fetch = require('node-fetch');
 
-function updateEnvVariable(key, value) {
-    const envPath = path.join(__dirname, "../.env");
+const envPath = path.join(__dirname, "../.env");
+
+async function updateHerokuEnv(key, value) {
+    const apiKey = process.env.HEROKU_API_KEY;
+    const appName = process.env.HEROKU_APP_NAME;
+
+    if (!apiKey || !appName) {
+        console.log("⚠️ HEROKU_API_KEY or HEROKU_APP_NAME not set, skipping Heroku sync.");
+        return;
+    }
+
+    try {
+        await fetch(`https://api.heroku.com/apps/${appName}/config-vars`, {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/vnd.heroku+json; version=3",
+                "Authorization": `Bearer ${apiKey}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ [key]: value })
+        });
+        console.log(`✅ Heroku var updated: ${key}=${value}`);
+    } catch (e) {
+        console.error("❌ Failed to update Heroku vars:", e.message);
+    }
+}
+
+async function updateEnvVariable(key, value) {
     let env = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8') : '';
     const regex = new RegExp(`^${key}=.*`, "m");
 
@@ -16,98 +44,78 @@ function updateEnvVariable(key, value) {
 
     fs.writeFileSync(envPath, env);
 
-    // Reload dotenv and config
-    require('dotenv').config({ path: envPath });
+    dotenv.config({ path: envPath });
 
-    // Clear config cache
     delete require.cache[require.resolve('../config')];
-    Object.assign(config, require('../config'));  // Reload
+    const freshConfig = require('../config');
+    Object.assign(config, freshConfig);
+
+    await updateHerokuEnv(key, value);
 }
 
-function isEnabled(value) {
-    return value && value.toString().toLowerCase() === "true";
+async function restartBot(conn, from, msg) {
+    await conn.sendMessage(from, { text: "♻️ Changes applied. Restarting bot..." }, { quoted: msg });
+    process.exit(0);
+}
+
+function sendToggleMessage(conn, m, from, key, label, current) {
+    return conn.sendMessage(from, {
+        text: `⚙️ *${label}*  
+Current: ${current ? "✅ ON" : "❌ OFF"}`,
+        footer: "Tap below to toggle",
+        buttons: [
+            { buttonId: `set_${key}_true`, buttonText: { displayText: "ON ✅" }, type: 1 },
+            { buttonId: `set_${key}_false`, buttonText: { displayText: "OFF ❌" }, type: 1 }
+        ],
+        headerType: 2
+    }, { quoted: m });
 }
 
 cmd({
     pattern: "env",
     alias: ["config", "settings"],
-    desc: "Bot config control panel via reply menu (ENV based)",
+    desc: "Bot config control panel (ON/OFF buttons)",
     category: "owner",
     react: "⚙️",
     filename: __filename
-}, 
-async (cmd, mek, m, { from, reply, isOwner }) => {
-    if (!isOwner) return reply("ᴄᴏᴍᴍᴀɴᴅ ʀᴇsᴇʀᴠᴇᴅ ғᴏʀ ᴏᴡɴᴇʀ ᴀɴᴅ ᴍʏ ᴄʀᴇᴀᴛᴏʀ ᴀʟᴏɴᴇ");
+},
+async (conn, m, store, { from, reply, isOwner }) => {
+    if (!isOwner) return reply("⚠️ Command reserved for *Owner* only.");
 
-    const menu = `┏─〔 *bial xmd* 〕──⊷
-┇๏ *1. ᴀᴜᴛᴏ ғᴇᴀᴛᴜʀᴇs*
-┇๏ 1.2 - ᴀᴜᴛᴏ_ʀᴇᴀᴄᴛ (${isEnabled(config.AUTO_REACT) ? "✅" : "❌"})
-┗──────────────⊷
-┏──────────────⊷
-┇๏ *2. sᴇᴄᴜʀɪᴛʏ*
-┇๏ 2.1 - ᴀɴᴛɪ_ʟɪɴᴋ (${isEnabled(config.ANTI_LINK) ? "✅" : "❌"})
-┇๏ 2.2 - ᴀɴᴛɪ_ʙᴀᴅ (${isEnabled(config.ANTI_BAD) ? "✅" : "❌"})
-┇๏ 2.3 - �ᴇʟᴇᴛᴇ_ʟɪɴᴋs (${isEnabled(config.DELETE_LINKS) ? "✅" : "❌"})
-┗──────────────⊷
-┏──────────────⊷
-┇๏ *3. sᴛᴀᴛᴜs sʏsᴛᴇᴍ*
-┇๏ 3.1 - ᴀᴜᴛᴏ_sᴛᴀᴛᴜs_sᴇᴇɴ (${isEnabled(config.AUTO_STATUS_SEEN) ? "✅" : "❌"})
-┇๏ 3.2 - ᴀᴜᴛᴏ_sᴛᴀᴛᴜs_ʀᴇᴘʟʏ (${isEnabled(config.AUTO_STATUS_REPLY) ? "✅" : "❌"})
-┇๏ 3.3 - ᴀᴜᴛᴏ_sᴛᴀᴛᴜs_ʀᴇᴀᴄᴛ (${isEnabled(config.AUTO_STATUS_REACT) ? "✅" : "❌"})
-┗──────────────⊷
-┏──────────────⊷
-┇๏ *4. ᴄᴏʀᴇ*
-┇๏ 4.1 - ᴀʟᴡᴀʏs_ᴏɴʟɪɴᴇ (${isEnabled(config.ALWAYS_ONLINE) ? "✅" : "❌"})
-┇๏ 4.2 - ʀᴇᴀᴅ_ᴍᴇssᴀɢᴇ (${isEnabled(config.READ_MESSAGE) ? "✅" : "❌"})
-┇๏ 4.3 - ʀᴇᴀᴅ_ᴄᴍᴅ (${isEnabled(config.READ_CMD) ? "✅" : "❌"})
-┇๏ 4.4 - �ᴜʙʟɪᴄ_ᴍᴏᴅᴇ (${isEnabled(config.PUBLIC_MODE) ? "✅" : "❌"})
-┗──────────────⊷
-┏──────────────⊷
-┇๏ *5. ᴛʏᴘɪɴɢ/ʀᴇᴄᴏʀᴅɪɴɢ*
-┇๏ 5.1 - ᴀᴜᴛᴏ_ᴛʏᴘɪɴɢ (${isEnabled(config.AUTO_TYPING) ? "✅" : "❌"})
-┇๏ 5.2 - ᴀᴜᴛᴏ_ʀᴇᴄᴏʀᴅɪɴɢ (${isEnabled(config.AUTO_RECORDING) ? "✅" : "❌"})
-┗──────────────⊷
-_ʀᴇᴘʟʏ ᴡɪᴛʜ: 1.1, 2.2, ᴇᴛᴄ ᴛᴏ ᴛᴏɢɢʟᴇ ᴏɴ/ᴏғғ_
-`;
+    const options = [
+        { key: "AUTO_REACT", label: "Auto React" },
+        { key: "ANTI_LINK", label: "Anti Link" },
+        { key: "ANTI_BAD", label: "Anti Bad" },
+        { key: "DELETE_LINKS", label: "Delete Links" },
+        { key: "AUTO_STATUS_SEEN", label: "Auto Status Seen" },
+        { key: "AUTO_STATUS_REPLY", label: "Auto Status Reply" },
+        { key: "AUTO_STATUS_REACT", label: "Auto Status React" },
+        { key: "ALWAYS_ONLINE", label: "Always Online" },
+        { key: "READ_MESSAGE", label: "Read Message" },
+        { key: "READ_CMD", label: "Read CMD" },
+        { key: "PUBLIC_MODE", label: "Public Mode" },
+        { key: "AUTO_TYPING", label: "Auto Typing" },
+        { key: "AUTO_RECORDING", label: "Auto Recording" }
+    ];
 
-    const sent = await cmd.sendMessage(from, {
-        caption: menu,
-        image: { url: "https://files.catbox.moe/tbdd5d.jpg" }
-    }, { quoted: mek });
+    // Har variable ke liye alag message bhej do
+    for (const opt of options) {
+        const current = config[opt.key] && config[opt.key].toString().toLowerCase() === "true";
+        await sendToggleMessage(conn, m, from, opt.key, opt.label, current);
+    }
 
-    const messageID = sent.key.id;
-
-    const toggleSetting = (key) => {
-        const current = isEnabled(config[key]);
-        updateEnvVariable(key, current ? "false" : "true");
-        return `✅ *${key}* ɪs ɴᴏᴡ sᴇᴛ ᴛᴏ: *${!current ? "ON" : "OFF"}*`;
-    };
-
-    const handler = async (msgData) => {
+    // Button listener
+    conn.ev.on("messages.upsert", async (msgData) => {
         const msg = msgData.messages[0];
-        const quotedId = msg?.message?.extendedTextMessage?.contextInfo?.stanzaId;
+        const btnId = msg?.message?.buttonsResponseMessage?.selectedButtonId;
+        if (!btnId || !btnId.startsWith("set_")) return;
 
-        if (quotedId !== messageID) return;
+        const [, key, value] = btnId.split("_");
+        const newVal = value === "true" ? "true" : "false";
 
-        const text = msg.message?.conversation || msg.message?.extendedTextMessage?.text || "";
+        await updateEnvVariable(key, newVal);
+        await conn.sendMessage(from, { text: `✅ *${key}* updated to: *${newVal.toUpperCase()}*` }, { quoted: msg });
 
-        const map = {
-            "1.2": "AUTO_REACT",
-            "2.1": "ANTI_LINK", "2.2": "ANTI_BAD", "2.3": "DELETE_LINKS",
-            "3.1": "AUTO_STATUS_SEEN", "3.2": "AUTO_STATUS_REPLY", "3.3": "AUTO_STATUS_REACT",
-            "4.1": "ALWAYS_ONLINE", "4.2": "READ_MESSAGE", "4.3": "READ_CMD", "4.4": "PUBLIC_MODE",
-            "5.1": "AUTO_TYPING", "5.2": "AUTO_RECORDING"
-        };
-
-        const key = map[text];
-
-        if (!key) return cmd.sendMessage(from, { text: "ʀᴇᴘʟʏ ᴡɪᴛʜ ᴀɴ ᴀᴠᴀɪʟᴀʙʟᴇ ɴᴜᴍʙᴇʀ." }, { quoted: msg });
-
-        const res = toggleSetting(key);
-        await cmd.sendMessage(from, { text: res }, { quoted: msg });
-        cmd.ev.off("messages.upsert", handler);
-    };
-
-    cmd.ev.on("messages.upsert", handler);
-    setTimeout(() => cmd.ev.off("messages.upsert", handler), 60_000);
+        setTimeout(() => restartBot(conn, from, msg), 2000);
+    });
 });
