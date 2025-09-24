@@ -10,7 +10,7 @@
     "SESSION_ID": {
       "description": "AP NE PAIR YA QR CODE SE WHATSAPP LINK KIA HOGA TO APKE PAS WHATSAPP PER EK CODE AYA HOGA AP WO CODE WHATSAPP SE COPY KAR KE YAHA NICHE BOX ME PASTE KARE",
       "required": true,
-      "value": "BILAL-MD~TUtGSaJQ#Rg3ORFjCKzgRKZYhtZyLW72kq8Hw9Th47rTN4kUDv6M"
+      "value": "BILAL-MD~qFVXiQCT#CN2pZj-3ee92A_5z8wlth6yppjk17u_Cs23Kk4YFzE4"
     },  
     
     "STICKER_NAME": {
@@ -92,7 +92,7 @@
     "OWNER_NUMBER": {
       "description": "BOT USER KA WHATSAPP NUMBER NICHE LIKHO YAAD RAHE BOT KE SAB COMMANDS SIRF YEH NUMBER HI USE KAR PAYE GA BAKII KOI AUR SAB COMMANDS USE NAHI KAR PAYE GA OK",
       "required": false,
-      "value": "5359481491"
+      "value": "917631927074"
 
     }, 
 
@@ -205,13 +205,13 @@
     "HEROKU_API_KEY": {
       "description": "HEROKU ACCOUNT SETTINGS SE JO API KEY MILTI HAI WO YAHA DALEN",
       "required": true,
-      "value": ""
+      "value": "HRKU-AAhIljfKEfaaJI9V_Ukmdbz70tzLraS-u4YVJOOGKaGg_____wuQgRWpPeao"
     },
 
     "HEROKU_APP_NAME": {
       "description": "HEROKU APP NAME JO APKE BOT KA HAI WO YAHA DALEN",
       "required": true,
-      "value": ""
+      "value": "bilal-md-test"
     }
   },
 
