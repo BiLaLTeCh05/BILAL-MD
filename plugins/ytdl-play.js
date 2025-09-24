@@ -1,54 +1,52 @@
-const config = require('../config');
 const { cmd } = require('../command');
-const yts = require('yt-search');
+const ytdl = require('ytdl-core');
+const fs = require('fs');
+const path = require('path');
 
 cmd({
-    pattern: "yt2",
-    alias: ["play2", "music"],
-    react: "🎵",
+    pattern: "play",
+    alias: ["song", "yt"],
     desc: "Download audio from YouTube",
     category: "download",
-    use: ".song <query or url>",
+    react: "🎵",
     filename: __filename
-}, async (conn, m, mek, { from, q, reply }) => {
+},
+async (conn, mek, m, { from, q, reply }) => {
     try {
-        if (!q) return await reply("❌ Please provide a song name or YouTube URL!");
+        if (!q) return reply("⚠️ Please give me a YouTube link or search query.\nExample: *.play https://youtu.be/xxxx*");
 
-        let videoUrl, title;
-        
-        // Check if it's a URL
-        if (q.match(/(youtube\.com|youtu\.be)/)) {
-            videoUrl = q;
-            const videoInfo = await yts({ videoId: q.split(/[=/]/).pop() });
-            title = videoInfo.title;
+        let url = q.trim();
+
+        // Agar link YouTube ka hai
+        if (ytdl.validateURL(url)) {
+            const info = await ytdl.getInfo(url);
+            const title = info.videoDetails.title;
+            const filePath = path.join(__dirname, "../temp", `${Date.now()}.mp3`);
+
+            const audioStream = ytdl(url, {
+                filter: 'audioonly',
+                quality: 'highestaudio'
+            });
+
+            const writeStream = fs.createWriteStream(filePath);
+            audioStream.pipe(writeStream);
+
+            writeStream.on("finish", async () => {
+                await conn.sendMessage(from, {
+                    audio: fs.readFileSync(filePath),
+                    mimetype: 'audio/mpeg',
+                    fileName: `${title}.mp3`
+                }, { quoted: mek });
+
+                fs.unlinkSync(filePath); // delete temp file
+            });
+
+            reply(`⬇️ Downloading: *${title}*`);
         } else {
-            // Search YouTube
-            const search = await yts(q);
-            if (!search.videos.length) return await reply("❌ No results found!");
-            videoUrl = search.videos[0].url;
-            title = search.videos[0].title;
+            reply("❌ Please provide a valid YouTube URL.");
         }
-
-        await reply("⏳ Downloading audio...");
-
-        // Use API to get audio
-        const apiUrl = `https://api.davidcyriltech.my.id/download/ytmp3?url=${encodeURIComponent(videoUrl)}`;
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-
-        if (!data.success) return await reply("❌ Failed to download audio!");
-
-        await conn.sendMessage(from, {
-            audio: { url: data.result.download_url },
-            mimetype: 'audio/mpeg',
-            ptt: false
-        }, { quoted: mek });
-
-        await reply(`✅ *${title}* downloaded successfully!`);
-
-    } catch (error) {
-        console.error(error);
-        await reply(`❌ Error: ${error.message}`);
+    } catch (e) {
+        console.error("Play Command Error:", e);
+        reply("❌ Error: " + e.message);
     }
 });
-
