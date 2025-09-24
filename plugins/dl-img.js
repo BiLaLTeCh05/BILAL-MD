@@ -1,110 +1,75 @@
-const { cmd } = require("../command");
-const axios = require("axios");
-
-// Memory to store pagination data per chat
-let imageCache = {};
+const axios = require('axios');
+const { cmd } = require('../command');
 
 cmd({
-    pattern: "img",
-    alias: ["image", "googleimage", "searchimg"],
-    react: "🖼️",
-    desc: "Search and download images with pagination",
-    category: "fun",
-    use: ".img <keywords>",
+    pattern: 'img',
+    alias: ['image', 'googleimage', 'searchimg'],
+    react: '🖼️',
+    desc: 'search google images 📷',
+    category: 'download',
+    use: '.img <keywords>',
     filename: __filename
-}, async (conn, mek, m, { reply, args, from }) => {
+}, async (malvin, mek, m, { reply, args, from }) => {
     try {
-        const query = args.join(" ");
+        const query = args.join(' ');
         if (!query) {
-            return reply(
-                "*APKO KON C PHOTOS DOWNLOAD KARNI HAI...🤔* \n\n" +
-                "ESE LIKHO: \n```.img flowers``` 🌹"
-            );
+            return reply('❌ please provide a search query\nexample: .img cute cats');
         }
 
-        await reply(`🔎 *"${query}" ki photos dhundi ja rahi hain...* 🖼️`);
+        await malvin.sendMessage(from, { react: { text: '⏳', key: m.key } });
+        await reply(`🔍 searching for *${query}*...`);
 
-        // ✅ Pinterest API (Stable)
-        const apiUrl = `https://api.akuari.my.id/search/pinterest?query=${encodeURIComponent(query)}`;
-        const response = await axios.get(apiUrl);
+        const url = `https://apis.davidcyriltech.my.id/googleimage?query=${encodeURIComponent(query)}`;
+        const response = await axios.get(url, { timeout: 15000 });
 
-        if (!response.data?.hasil || response.data.hasil.length === 0) {
-            return reply("*APKI PHOTOS NAHI MILI 😔*");
+        if (!response.data?.success || !response.data.results?.length) {
+            await reply('❌ no images found 😔\ntry different keywords');
+            await malvin.sendMessage(from, { react: { text: '❌', key: m.key } });
+            return;
         }
 
-        // Save images in cache for this chat
-        imageCache[from] = {
-            query,
-            results: response.data.hasil,
-            index: 0
-        };
+        const results = response.data.results;
+        const maxImages = Math.min(results.length, 5);
+        await reply(`✅ found *${results.length}* images for *${query}*\nsending top ${maxImages}...`);
 
-        // Send first page
-        sendImagePage(conn, from, mek);
+        const selectedImages = results
+            .sort(() => 0.5 - Math.random())
+            .slice(0, maxImages);
+
+        for (const [index, imageUrl] of selectedImages.entries()) {
+            try {
+                const caption = `
+╭───[ *ɪᴍᴀɢᴇ sᴇᴀʀᴄʜ* ]───
+├ *ǫᴜᴇʀʏ*: ${query} 🔍
+├ *ʀᴇsᴜʟᴛ*: ${index + 1} of ${maxImages} 🖼️
+╰───[ *popkid xtr* ]───
+> *powered by popkid* ♡`;
+
+                await cmd.sendMessage(
+                    from,
+                    {
+                        image: { url: imageUrl },
+                        caption,
+                        contextInfo: { mentionedJid: [m.sender] }
+                    },
+                    { quoted: mek }
+                );
+            } catch (err) {
+                console.warn(`⚠️ failed to send image ${index + 1}: ${imageUrl}`, err);
+                continue;
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+
+        await cmd.sendMessage(from, { react: { text: '✅', key: m.key } });
 
     } catch (error) {
-        console.error("Image Search Error:", error);
-        reply("❌ Error: Images fetch karne me dikkat aa rahi hai. Baad me try karo.");
-    }
-});
-
-// ====================
-// 📸 Helper Function
-// ====================
-async function sendImagePage(conn, from, mek) {
-    const cache = imageCache[from];
-    if (!cache) return;
-
-    const start = cache.index;
-    const end = start + 5;
-    const images = cache.results.slice(start, end);
-
-    if (images.length === 0) {
-        return conn.sendMessage(from, { text: "✅ Aur photos nahi milin 😅" }, { quoted: mek });
-    }
-
-    // Send each image
-    for (const imageUrl of images) {
-        await conn.sendMessage(
-            from,
-            { image: { url: imageUrl }, caption: `*👑 BILAL-MD WHATSAPP BOT 👑*` },
-            { quoted: mek }
-        );
-        await new Promise(res => setTimeout(res, 1200));
-    }
-
-    // Update index for next page
-    cache.index += 5;
-
-    // Add Next button if more images left
-    if (cache.index < cache.results.length) {
-        await conn.sendMessage(from, {
-            text: `🔎 Aur photos dekhne ke liye *Next Page* dabaye 👇`,
-            buttons: [
-                { buttonId: `nextimg_${cache.query}`, buttonText: { displayText: "➡️ Next Page" }, type: 1 }
-            ],
-            headerType: 2
-        }, { quoted: mek });
-    } else {
-        await conn.sendMessage(from, { text: "✅ Ye sari photos thi jo milin 🌹" }, { quoted: mek });
-        delete imageCache[from]; // clear cache after last page
-    }
-}
-
-// ====================
-// 🔘 Next Button Handler
-// ====================
-cmd({
-    pattern: "nextimg_",
-    dontAddCommandList: true
-}, async (conn, mek, m, { from, body }) => {
-    try {
-        const query = body.split("_")[1];
-        if (!imageCache[from]) {
-            return conn.sendMessage(from, { text: "⚠️ Pehle `.img <query>` use karein." }, { quoted: mek });
-        }
-        await sendImagePage(conn, from, mek);
-    } catch (error) {
-        console.error("Next page error:", error);
+        console.error('❌ image search error:', error);
+        const errorMsg = error.message.includes('timeout')
+            ? '❌ request timed out ⏰'
+            : '❌ failed to fetch images 😞';
+        await reply(errorMsg);
+        await cmd.sendMessage(from, { react: { text: '❌', key: m.key } });
     }
 });
