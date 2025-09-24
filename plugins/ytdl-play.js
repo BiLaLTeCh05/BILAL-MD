@@ -5,7 +5,7 @@ const path = require('path');
 const ytSearch = require('yt-search');
 
 cmd({
-    pattern: "play",
+    pattern: "play12",
     alias: ["song", "yt"],
     desc: "Download audio from YouTube by link or search query",
     category: "download",
