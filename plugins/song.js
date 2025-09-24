@@ -6,8 +6,8 @@ const { cmd } = require('../command');
 // 📌 SONG DOWNLOAD COMMAND
 // =============================
 cmd({
-    pattern: "song12",
-    alias: ["music", "ytmp3"],
+    pattern: "song",
+    alias: ["music", "play"],
     desc: "Download song from YouTube",
     category: "download",
     react: "🎵",
