@@ -9,7 +9,6 @@
     "restart": "pm2 restart BILAL-MD"
   },
   "dependencies": {
-    "@whiskeysockets/baileys": "github:kenyanpopkid/bail",
     "@adiwajshing/keyed-db": "latest",
     "@dark-yasiya/yt-dl.js": "1.0.5",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
@@ -59,6 +58,7 @@
     "qrcode-reader": "^1.0.4",
     "@mrnima/tiktok-downloader": "1.0.0",
     "@mrnima/facebook-downloader": "1.0.0",
-    "mrnima-moviedl": "1.0.0"
+    "mrnima-moviedl": "1.0.0",
+    "@whiskeysockets/baileys": "^6.7.18"
   }
 }
