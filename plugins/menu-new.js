@@ -60,6 +60,7 @@ cmd({
 ┃👑│ • **UNBLOCK**
 ┃👑│ • **FULLPP**
 ┃👑│ • **SETPP**
+┃👑│ • **GETPP**
 ┃👑│ • **RESTART**
 ┃👑│ • **UPDATECMD**
 *╰━━━━━━━━━━━━━━━┈⊷*
@@ -86,15 +87,11 @@ cmd({
 *╭━━〔 👑 XTRA MENU 👑 〕━━┈⊷*
 ┃👑│ • **TIMENOW**
 ┃👑│ • **DATE**
-┃👑│ • **COUNT**
-┃👑│ • **CALCULATE**
-┃👑│ • **COUNTX**
 ┃👑│ • **FLIP**
 ┃👑│ • **COINFLIP**
 ┃👑│ • **RCOLOR**
 ┃👑│ • **ROLL**
-┃👑│ • **FACT**
-┃👑│ • **DEFINE**
+┃👑│ • **SS**
 ┃👑│ • **NEWS**
 ┃👑│ • **MOVIE**
 ┃👑│ • **WEATHER**
@@ -108,7 +105,7 @@ cmd({
 ┃👑│ • **REPO**
 ┃👑│ • **OWNER**
 ┃👑│ • **MENU**
-┃👑│ • **MENU2**
+┃👑│ • **LIST**
 ┃👑│ • **RESTART**
 *╰━━━━━━━━━━━━━━━┈⊷*
 
@@ -123,7 +120,7 @@ cmd({
                 buttons: [
                     {
                         buttonId: "channel_link",
-                        buttonText: { displayText: "📢 OFFICIAL CHANNEL" },
+                        buttonText: { displayText: "SUPPORT" },
                         type: 1
                     }
                 ],
@@ -142,7 +139,7 @@ cmd({
 
                 if (buttonResponse === "channel_link") {
                     await conn.sendMessage(from, {
-                        text: "📢 Official Channel Join Karein:\nhttps://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G"
+                        text: "*👑 BILAL-MD SUPPORT 👑* \n *https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G*"
                     });
                 }
             } catch (err) {
@@ -154,7 +151,7 @@ cmd({
         console.error('ERROR:', e);
         await conn.sendMessage(
             from,
-            { text: `_Menu show karne me error aaya hai_` },
+            { text: `*SHYAD KOI MASLA HAI BOT ME 🥺❤️* \n *AP BAD ME MENU MANGWA LENA OKY 😊🌹*` },
             { quoted: mek }
         );
     }
