@@ -3,11 +3,12 @@ const { cmd } = require('../command');
 
 cmd({
     pattern: "menu",
-    desc: "Show interactive menu system",
-    category: "menu",
+    alias: ["help", "commands", "allmenu", "m", "me", "men", "meno", "mno", "menu1", "list", "allcmd", "allcmds", "cmd", "cmds"],
+    desc: "Show all menu commands in one list with channel button",
+    category: "menu",,
     react: "👑",
     filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
+}, async (conn, mek, m, { from }) => {
     try {
         const menuCaption = `*╭━━━〔 👑 BiLAL-MD 👑 〕━━━┈⊷*
 *┃👑╭──────────────*
@@ -19,180 +20,142 @@ cmd({
 *┃👑│ VERSION :❯* 1.0
 *┃👑╰──────────────*
 *╰━━━━━━━━━━━━━━━┈⊷*
-*👑 SELECT YOUR MENU 👑*`;
 
-        const contextInfo = {
-            mentionedJid: [m.sender],
-            forwardingScore: 999,
-            isForwarded: true
-        };
+*╭━━〔 👑 DOWNLOAD MENU 👑 〕━━┈⊷*
+┃👑│ • **FB**
+┃👑│ • **TIKTOK**
+┃👑│ • **INSTA**
+┃👑│ • **APK**
+┃👑│ • **IMG**
+┃👑│ • **SONG**
+┃👑│ • **PLAY**
+┃👑│ • **VIDEO**
+*╰━━━━━━━━━━━━━━━┈⊷*
 
-        // send menu with image + buttons
-        const sentMsg = await conn.sendMessage(
+*╭━━〔 👑 GROUP MENU 👑 〕━━┈⊷*
+┃👑│ • **GROUPLINK**
+┃👑│ • **KICKALL**
+┃👑│ • **KICKALL2**
+┃👑│ • **KICKALL3**
+┃👑│ • **ADD**
+┃👑│ • **REMOVE**
+┃👑│ • **KICK**
+┃👑│ • **PROMOTE**
+┃👑│ • **DEMOTE**
+┃👑│ • **DISMISS**
+┃👑│ • **REVOKE**
+┃👑│ • **MUTE**
+┃👑│ • **UNMUTE**
+┃👑│ • **LOCKGC**
+┃👑│ • **UNLOCKGC**
+┃👑│ • **TAG**
+┃👑│ • **HIDETAG**
+┃👑│ • **TAGALL**
+┃👑│ • **TAGADMINS**
+┃👑│ • **INVITE**
+*╰━━━━━━━━━━━━━━━┈⊷*
+
+*╭━━〔 👑 USER MENU 👑 〕━━┈⊷*
+┃👑│ • **BLOCK**
+┃👑│ • **UNBLOCK**
+┃👑│ • **FULLPP**
+┃👑│ • **SETPP**
+┃👑│ • **RESTART**
+┃👑│ • **UPDATECMD**
+*╰━━━━━━━━━━━━━━━┈⊷*
+
+*╭━━〔 👑 AI MENU 👑 〕━━┈⊷*
+┃👑│ • **AI**
+┃👑│ • **GPT**
+┃👑│ • **BING**
+┃👑│ • **IMAGINE**
+*╰━━━━━━━━━━━━━━━┈⊷*
+
+*╭━━〔 👑 CONVERTER MENU 👑 〕━━┈⊷*
+┃👑│ • **STICKER**
+┃👑│ • **EMOJIMIX**
+┃👑│ • **TAKE**
+┃👑│ • **TOMP3**
+┃👑│ • **FANCY**
+┃👑│ • **TTS**
+┃👑│ • **TRT**
+┃👑│ • **BASE64**
+┃👑│ • **UNBASE64**
+*╰━━━━━━━━━━━━━━━┈⊷*
+
+*╭━━〔 👑 XTRA MENU 👑 〕━━┈⊷*
+┃👑│ • **TIMENOW**
+┃👑│ • **DATE**
+┃👑│ • **COUNT**
+┃👑│ • **CALCULATE**
+┃👑│ • **COUNTX**
+┃👑│ • **FLIP**
+┃👑│ • **COINFLIP**
+┃👑│ • **RCOLOR**
+┃👑│ • **ROLL**
+┃👑│ • **FACT**
+┃👑│ • **DEFINE**
+┃👑│ • **NEWS**
+┃👑│ • **MOVIE**
+┃👑│ • **WEATHER**
+*╰━━━━━━━━━━━━━━━┈⊷*
+
+*╭━━〔 👑 MAIN MENU 👑 〕━━┈⊷*
+┃👑│ • **PING**
+┃👑│ • **ALIVE**
+┃👑│ • **RUNTIME**
+┃👑│ • **UPTIME**
+┃👑│ • **REPO**
+┃👑│ • **OWNER**
+┃👑│ • **MENU**
+┃👑│ • **MENU2**
+┃👑│ • **RESTART**
+*╰━━━━━━━━━━━━━━━┈⊷*
+
+*👑 BILAL-MD WHATSAPP BOT 👑*`;
+
+        await conn.sendMessage(
             from,
             {
                 image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/kunzpz.png' },
                 caption: menuCaption,
-                contextInfo: contextInfo,
+                footer: "👑 BILAL-MD WHATSAPP BOT 👑",
                 buttons: [
-                    { buttonId: "1", buttonText: { displayText: "👑 DOWNLOAD MENU👑" }, type: 1 },
-                    { buttonId: "2", buttonText: { displayText: "👑 GROUP MENU👑" }, type: 1 },
-                    { buttonId: "3", buttonText: { displayText: "👑 USER MENU 👑" }, type: 1 },
-                    { buttonId: "4", buttonText: { displayText: "👑 AI MENU 👑" }, type: 1 },
-                    { buttonId: "5", buttonText: { displayText: "👑 CONVERT MENU 👑" }, type: 1 },
-                    { buttonId: "6", buttonText: { displayText: "👑 XTRA MENU 👑" }, type: 1 },
-                    { buttonId: "7", buttonText: { displayText: "👑 MAIN MENU 👑" }, type: 1 }
+                    {
+                        buttonId: "channel_link",
+                        buttonText: { displayText: "📢 OFFICIAL CHANNEL" },
+                        type: 1
+                    }
                 ],
                 headerType: 4
             },
             { quoted: mek }
         );
 
-        const messageID = sentMsg.key.id;
-
-        // ==============================
-        // ✅ MENU DATA (same design)
-        // ==============================
-        const menuData = {
-            '1': {
-                content: `*╭━━━〔 👑 DOWNLOAD 👑 〕━━━┈⊷*
-*┃👑╭──────────────*
-┃👑│ • fb 
-┃👑│ • tiktok 
-┃👑│ • Insta 
-┃👑│ • apk 
-┃👑│ • img   
-┃👑│ • song 
-┃👑│ • play 
-┃👑│ • video  
-*╰━━━━━━━━━━━━━━━┈⊷*
-*👑 BILAL-MD WHATSAPP BOT 👑*`
-            },
-            '2': {
-                content: `*╭━━━〔 👑 GROUP MENU 👑 〕━━━┈⊷*
-*┃👑╭──────────────*
-┃👑│ • grouplink
-┃👑│ • kickall
-┃👑│ • add 
-┃👑│ • remove 
-┃👑│ • kick 
-┃👑│ • promote 
-┃👑│ • demote 
-┃👑│ • revoke
-┃👑│ • mute 
-┃👑│ • unmute
-┃👑│ • lockgc
-┃👑│ • unlockgc
-┃👑│ • tagall
-┃👑│ • hidetag
-*╰━━━━━━━━━━━━━━━┈⊷*
-*👑 BILAL-MD WHATSAPP BOT 👑*`
-            },
-            '3': {
-                content: `*╭━━━〔 👑 USER MENU 👑 〕━━━┈⊷*
-*┃👑╭──────────────*
-┃👑│ • block 
-┃👑│ • unblock 
-┃👑│ • fullpp 
-┃👑│ • setpp 
-┃👑│ • getpp 
-┃👑│ • restart
-┃👑│ • updatecmd
-*╰━━━━━━━━━━━━━━━┈⊷*
-*👑 BILAL-MD WHATSAPP BOT 👑*`
-            },
-            '4': {
-                content: `*╭━━━〔 👑 AI MENU 👑 〕━━━┈⊷*
-┃👑│ • ai 
-┃👑│ • gpt 
-┃👑│ • bing 
-┃👑│ • imagine 
-*╰━━━━━━━━━━━━━━━┈⊷*
-*👑 BILAL-MD WHATSAPP BOT 👑*`
-            },
-            '5': {
-                content: `*╭━━━〔 👑 CONVERTER 👑 〕━━━┈⊷*
-┃👑╭──────────────
-┃👑│ • sticker 
-┃👑│ • ss
-┃👑│ • take 
-┃👑│ • tomp3 
-┃👑│ • fancy 
-┃👑│ • tts 
-┃👑│ • trt 
-┃👑│ • getpp 
-*╰━━━━━━━━━━━━━━━┈⊷*
-*👑 BILAL-MD WHATSAPP BOT 👑*`
-            },
-            '6': {
-                content: `*╭━━━〔 👑 XTRA MENU 👑 〕━━━┈⊷*
-*┃👑╭──────────────*
-┃👑│ • timenow
-┃👑│ • date
-┃👑│ • count 
-┃👑│ • calculate 
-┃👑│ • flip
-┃👑│ • coinflip
-┃👑│ • rcolor
-┃👑│ • roll
-┃👑│ • fact
-┃👑│ • define 
-┃👑│ • news 
-┃👑│ • movie 
-┃👑│ • weather 
-*╰━━━━━━━━━━━━━━━┈⊷*
-*👑 BILAL-MD WHATSAPP BOT 👑*`
-            },
-            '7': {
-                content: `*╭━━━〔 👑 MAIN MENU 👑 〕━━━┈⊷*
-*┃👑╭──────────────*
-┃👑│ • ping
-┃👑│ • alive
-┃👑│ • runtime
-┃👑│ • uptime
-┃👑│ • repo
-┃👑│ • owner
-┃👑│ • menu
-┃👑│ • menu2
-┃👑│ • restart
-*╰━━━━━━━━━━━━━━━┈⊷*
-*👑 BILAL-MD WHATSAPP BOT 👑*`
-            }
-        };
-
-        // ==============================
-        // ✅ HANDLER
-        // ==============================
-        const handler = async (msgData) => {
+        // Handle button click
+        conn.ev.on("messages.upsert", async (chatUpdate) => {
             try {
-                const receivedMsg = msgData.messages[0];
-                if (!receivedMsg?.message) return;
+                const msg = chatUpdate.messages[0];
+                if (!msg.message) return;
+                const from = msg.key.remoteJid;
+                const buttonResponse = msg.message.buttonsResponseMessage?.selectedButtonId;
 
-                const textMsg = receivedMsg.message.conversation || 
-                    receivedMsg.message.extendedTextMessage?.text || 
-                    receivedMsg.message.buttonsResponseMessage?.selectedButtonId;
-
-                if (menuData[textMsg]) {
-                    await conn.sendMessage(
-                        from,
-                        { text: menuData[textMsg].content, contextInfo: contextInfo },
-                        { quoted: receivedMsg }
-                    );
+                if (buttonResponse === "channel_link") {
+                    await conn.sendMessage(from, {
+                        text: "📢 Official Channel Join Karein:\nhttps://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G"
+                    });
                 }
-            } catch (e) {
-                console.log("Menu handler error:", e);
+            } catch (err) {
+                console.error("Button Error:", err);
             }
-        };
-
-        conn.ev.on("messages.upsert", handler);
-
-        // auto remove listener after 5 min
-        setTimeout(() => {
-            conn.ev.off("messages.upsert", handler);
-        }, 300000);
+        });
 
     } catch (e) {
         console.error('ERROR:', e);
-        await conn.sendMessage(from, { text: "_Menu show karte waqt error aagaya._" }, { quoted: mek });
+        await conn.sendMessage(
+            from,
+            { text: `_Menu show karne me error aaya hai_` },
+            { quoted: mek }
+        );
     }
 });
