@@ -49,7 +49,7 @@ cmd({
 
         // Download the latest code
         const zipPath = path.join(__dirname, "../latest.zip");
-        const { data: zipData } = await axios.get("https://github.com/Terrizev/VERONICA-AI/archive/main.zip", { 
+        const { data: zipData } = await axios.get("https://github.com/BilalTech05/BILAL-MD/archive/main.zip", { 
             responseType: "arraybuffer",
             headers: {
                 'User-Agent': 'VERONICA-AI'
@@ -64,7 +64,7 @@ cmd({
         zip.extractAllTo(extractPath, true);
 
         // Copy updated files
-        const sourcePath = path.join(extractPath, "VERONICA-AI-main");
+        const sourcePath = path.join(extractPath, "Veronica-ai-main");
         const destinationPath = path.join(__dirname, '..');
         
         if (fs.existsSync(sourcePath)) {
