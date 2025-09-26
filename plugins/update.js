@@ -32,7 +32,7 @@ cmd({
         };
 
         // Fetch the latest commit hash from GitHub
-        const { data: commitData } = await axios.get("https://api.github.com/repos/Terrizev/VERONICA-AI/commits/main", {
+        const { data: commitData } = await axios.get("https://api.github.com/repos/BilalTech05/BILAL-MD/commits/main", {
             headers: {
                 'User-Agent': 'VERONICA-AI'
             }
