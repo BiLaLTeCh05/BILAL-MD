@@ -25,7 +25,7 @@ cmd({
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363397100406773@newsletter',
-                    newsletterName: 'VERONICA 𝐔𝐏𝐃𝐀𝐓𝐄𝐒',
+                    newsletterName: 'BILAL-MD UPDATES',
                     serverMessageId: 143
                 }
             }
@@ -34,7 +34,7 @@ cmd({
         // Fetch the latest commit hash from GitHub
         const { data: commitData } = await axios.get("https://api.github.com/repos/BilalTech05/BILAL-MD/commits/main", {
             headers: {
-                'User-Agent': 'VERONICA-AI'
+                'User-Agent': 'BILAL-MD'
             }
         });
         const latestCommitHash = commitData.sha;
@@ -42,7 +42,7 @@ cmd({
 
         if (latestCommitHash === currentHash) {
             return await conn.sendMessage(from, {
-                text: "BILAL-MD is already up-to-date!*",
+                text: "*✅ BILAL-MD is already up-to-date!*",
                 ...newsletterConfig
             }, { quoted: anony });
         }
@@ -52,7 +52,7 @@ cmd({
         const { data: zipData } = await axios.get("https://github.com/BilalTech05/BILAL-MD/archive/main.zip", { 
             responseType: "arraybuffer",
             headers: {
-                'User-Agent': 'VERONICA-AI'
+                'User-Agent': 'BILAL-MD'
             },
             timeout: 60000
         });
@@ -64,7 +64,7 @@ cmd({
         zip.extractAllTo(extractPath, true);
 
         // Copy updated files
-        const sourcePath = path.join(extractPath, "Veronica-ai-main");
+        const sourcePath = path.join(extractPath, "BILAL-MD-main");
         const destinationPath = path.join(__dirname, '..');
         
         if (fs.existsSync(sourcePath)) {
@@ -77,12 +77,8 @@ cmd({
         await setCommitHash(latestCommitHash);
 
         // Cleanup
-        if (fs.existsSync(zipPath)) {
-            fs.unlinkSync(zipPath);
-        }
-        if (fs.existsSync(extractPath)) {
-            fs.rmSync(extractPath, { recursive: true, force: true });
-        }
+        if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
+        if (fs.existsSync(extractPath)) fs.rmSync(extractPath, { recursive: true, force: true });
 
         // Send progress messages
         const progressMessages = [
@@ -102,17 +98,13 @@ cmd({
 
         // Final success message with image
         await conn.sendMessage(from, {
-            image: { 
-                url: "https://files.catbox.moe/ue0vkz.jpg"
-            },
-            caption: "✅ *Update complete!*\n\n_Restarting the bot to apply changes..._\n\n⚡ Powered by Terri",
+            image: { url: "https://files.catbox.moe/ue0vkz.jpg" },
+            caption: "✅ *Update complete!*\n\n_Restarting the bot to apply changes..._\n\n⚡ Powered by BilalTech05",
             ...newsletterConfig
         }, { quoted: mek });
 
         // Restart the bot after a short delay
-        setTimeout(() => {
-            process.exit(0);
-        }, 3000);
+        setTimeout(() => process.exit(0), 3000);
 
     } catch (error) {
         console.error("Update error:", error);
@@ -186,9 +178,9 @@ cmd({
         }, { quoted: mek });
 
         // Fetch the latest commit info from GitHub
-        const { data: commitData } = await axios.get("https://api.github.com/repos/Terrizev/VERONICA-AI/commits/main", {
+        const { data: commitData } = await axios.get("https://api.github.com/repos/BilalTech05/BILAL-MD/commits/main", {
             headers: {
-                'User-Agent': 'VERONICA-AI'
+                'User-Agent': 'BILAL-MD'
             },
             timeout: 10000
         });
@@ -202,7 +194,7 @@ cmd({
 
         if (latestCommitHash === currentHash) {
             return await conn.sendMessage(from, {
-                text: `✅ *VERONICA is up-to-date!*\n\n*Current Version:* \`${currentHash.substring(0, 7)}\`\n*Last Commit:* ${latestCommitMessage}\n*Date:* ${commitDate}\n*Author:* ${author}`,
+                text: `✅ *BILAL-MD is up-to-date!*\n\n*Current Version:* \`${currentHash.substring(0, 7)}\`\n*Last Commit:* ${latestCommitMessage}\n*Date:* ${commitDate}\n*Author:* ${author}`,
                 ...newsletterConfig
             }, { quoted: anony });
         }
@@ -210,10 +202,8 @@ cmd({
         // Get commit comparison to show what's new
         let changelog = "";
         try {
-            const { data: compareData } = await axios.get(`https://api.github.com/repos/Terrizev/VERONICA-AI/compare/${currentHash}...${latestCommitHash}`, {
-                headers: {
-                    'User-Agent': 'VERONICA-AI'
-                },
+            const { data: compareData } = await axios.get(`https://api.github.com/repos/BilalTech05/BILAL-MD/compare/${currentHash}...${latestCommitHash}`, {
+                headers: { 'User-Agent': 'BILAL-MD' },
                 timeout: 10000
             });
             
