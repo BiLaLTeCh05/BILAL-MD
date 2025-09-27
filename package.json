@@ -1,14 +1,19 @@
 {
-  "name": "BILAL-MD",
-  "version": "2.0.0",
+  "name": "bilal-md",
+  "version": "1.0.0",
+  "description": "PAKISTAN'S FIRST BOT IN URDU LANGUAGE",
   "main": "index.js",
   "scripts": {
     "start": "pm2 start index.js --deep-monitoring --attach --name BILAL-MD",
     "stop": "pm2 stop BILAL-MD",
     "restart": "pm2 restart BILAL-MD"
   },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
   "dependencies": {
-    "@whiskeysockets/baileys": "github:XdKing2/Malvin-Baileys",
+    "@whiskeysockets/baileys": "github:kenyanpopkid/bail",
     "@adiwajshing/keyed-db": "latest",
     "@dark-yasiya/yt-dl.js": "1.0.5",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
@@ -31,15 +36,13 @@
     "fluent-ffmpeg": "^2.1.2",
     "form-data": "^4.0.0",
     "google-tts-api": "^2.0.2",
-    "path": "^0.12.7",
     "node-fetch": "^2.6.1",
-    "btch-downloader": "^2.2.9",u
+    "btch-downloader": "^2.2.9",
     "megajs": "^1.3.7",
     "pdfkit": "^0.17.1",
     "wa_set_pkg": "1.0.5",
     "wa-sticker-formatter": "^4.4.4",
-    "vm": "^0.1.0",
-"adm-zip": "^0.5.16",
+    "adm-zip": "^0.5.16",
     "cheerio": "^1.0.0-rc.12",
     "ruhend-scraper": "8.0.3",
     "qrcode-terminal": "^0.12.0",
