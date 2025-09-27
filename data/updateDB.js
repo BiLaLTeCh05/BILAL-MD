@@ -1,16 +1,52 @@
-const fs = require("fs");
-const path = require("path");
+const { DATABASE } = require('../lib/database');
+const { DataTypes } = require('sequelize');
 
-const dbPath = path.join(__dirname, "commit.json");
+const UpdateDB = DATABASE.define('UpdateInfo', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: false,
+        defaultValue: 1,
+    },
+    commitHash: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+}, {
+    tableName: 'update_info',
+    timestamps: false,
+    hooks: {
+        beforeCreate: (record) => { record.id = 1; },
+        beforeBulkCreate: (records) => {
+            records.forEach(record => { record.id = 1; });
+        },
+    },
+});
 
-function getCommitHash() {
-    if (!fs.existsSync(dbPath)) return null;
-    const data = JSON.parse(fs.readFileSync(dbPath));
-    return data.hash || null;
+async function initializeUpdateDB() {
+    await UpdateDB.sync();
+    const [record, created] = await UpdateDB.findOrCreate({
+        where: { id: 1 },
+        defaults: { commitHash: 'unknown' },
+    });
+    return record;
 }
 
-function setCommitHash(hash) {
-    fs.writeFileSync(dbPath, JSON.stringify({ hash }, null, 2));
+async function setCommitHash(hash) {
+    await initializeUpdateDB();
+    const record = await UpdateDB.findByPk(1);
+    record.commitHash = hash;
+    await record.save();
 }
 
-module.exports = { getCommitHash, setCommitHash };
+async function getCommitHash() {
+    await initializeUpdateDB();
+    const record = await UpdateDB.findByPk(1);
+    return record ? record.commitHash : 'unknown';
+}
+
+module.exports = {
+    UpdateDB,
+    setCommitHash,
+    getCommitHash,
+};
