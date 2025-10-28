@@ -1,0 +1,108 @@
+{
+  "name": "👑 BILAL-MD 👑",
+  "description": "♥️ PAKISTAN'S FIRST BOT IN URDU LANGUAGE ♥️",
+  "logo": "https://files.catbox.moe/kunzpz.png",
+  "keywords": ["BILAL-MD"],
+  "success_url": "/",
+  "stack": "container",
+
+  "env": {
+    "SESSION_ID": {
+      "description": "AP NE PAIR YA QR CODE SE WHATSAPP LINK KIA HOGA TO APKE PAS WHATSAPP PER EK CODE AYA HOGA AP WO CODE WHATSAPP SE COPY KAR KE YAHA NICHE BOX ME PASTE KARE",
+      "required": true,
+      "value": ""
+    },
+
+    "PREFIX": {
+      "description": "AP APNE BOT KO KON SI NISHANI SE CHALANA CHAHTE HAI JESE . ! ? : & AP IN ME SE KOI BHI NISHAN NICHE BOX ME LIKHE PHIR APKA BOT JAB ACTIVE HO JAYE GA TO IS NISHAN KE ZARIYE CHALE GA",
+      "required": true,
+      "value": "."
+    },
+
+    "MODE": {
+      "description": "AP KIA CHAHTE HAI KE AP KA BOT SIRF AP KHUD USE KARE TO ISKE LIE AP NICHE BOX ME ❮private❯ LIKHO AUR AGAR HAR KOI USE KARE TO USKE LIE NICHE BOX ME ❮public❯ LIKHO",
+      "required": true,
+      "value": "public"
+    },
+
+    "ALWAYS_ONLINE": {
+      "description": "AGAR AP ALL TIME 24 HOURS ONLINE SHOW HONA CHAHTE HAI TO NICHE BOX ME ❮true❯ LIKHO AGAR NAHI CHAHTE TO USKE LIE NICHE ❮false❯ LIKHE",
+      "required": true,
+      "value": "false"
+    },
+
+    "AUTO_STATUS_SEEN": {
+      "description": "JAB KOI STATUS LAGAYE GA TO WO USY TIME SEEN HO JAYE GA APKO SEEN KARNE KI ZARURAT HI NAHIII AGAR AP NE YE SETTING ON RAKHNI HAI TO NICHE BOX ME ❮true❯ LIKHO AGAR YE SETTING OFF RAKHNI HAI TO NICHE BOX ME ❮false❯ LIKHO",
+      "required": true,
+      "value": "true"
+    },
+
+    "AUTO_STATUS_REACT": {
+      "description": "AP KIA CHAHTE HAI JAB APKA BOT STATUS SEEN KARE TO SATH ME REACT BHI KAREE TO USKE LIE NICHE BOX ME ❮true❯ LIKHO AGAR AP CHAHTE KE APKA BOT SIRF STATUS SEEN KARE REACT NAA KARE TO USKE LIE NICHE BOX ME ❮false❯ LIKHO",
+      "required": true,
+      "value": "true"
+    },
+
+    "OWNER_NAME": {
+      "description": "BOT KON USE KARE GA AP USKA NAME NICHE BOX ME LIKHO",
+      "required": true,
+      "value": "BILAL"
+    },
+
+    "OWNER_NUMBER": {
+      "description": "BOT USER KA WHATSAPP NUMBER NICHE LIKHO YAAD RAHE BOT KE SAB COMMANDS SIRF YEH NUMBER HI USE KAR PAYE GA BAKII KOI AUR SAB COMMANDS USE NAHI KAR PAYE GA OK",
+      "required": true,
+      "value": "22553229710"
+    },
+
+    "ANTI_LINK": {
+      "description": "GROUP ME KOI BHI LINK BHEJE GA TO APKA BOT LINK DELETE KARE GA AUR LINK BHEJNE WALO KO REMOVE KRE GA AGAR AP NE YE SETTING ON RAKHNI HAI TO USKE LIE NICHE BOX ME ❮true❯ LIKHO AGAR AP CHAHTE KE APKA BOT LINKS DELETE NAA KARE AUR MEMBER BHI REMOVE NAA KARE TO USKE LIE AP NICHE BOX ME ❮false❯ LIKHO",
+      "required": true,
+      "value": "true"
+    },
+
+    "WELCOME": {
+      "description": "AGAR AP CHAHTE KE KOI BHI NEW MEMBER JAB GROUP ME JAYE GA TO BOT USKA WELCOME KARE GAA TO AGAR AP NE YE SETTING ON RAKHNI TO USKE LIE AP NICHE BOX ME ❮true❯ LIKHO AGAR AP NE YE SETTING OFF RAKHNI HAI TO USKE LIE AP NICHE BOX ME ❮false❯ LIKHO",
+      "required": true,
+      "value": "true"
+    },
+
+    "READ_MESSAGE": {
+      "description": "JO KOI BHI APKO MESSAGE KARE GA WO CHAHE GROUP HO TO APKA BOT KHUD HI MESSAGE SEEN KAR LE GA TO AGAR AP NE YE SETTING ON RAKHNI TO USKE LIE AP NICHE BOX ME ❮true❯ LIKHO AGAR AP NE YE SETTING OFF RAKHNI HAI TO USKE LIE AP NICHE BOX ME ❮false❯ LIKHO",
+      "required": true,
+      "value": "false"
+    },
+
+    "AUTO_RECORDING": {
+      "description": "JAB KOI APKO MESSAGE KARE GA TO USKE PASS SHOW HOGA KE AP KOI VOICE BHEJ RAHE HAI US KE LIE AGAR AP NE YE SETTING ON RAKHNI TO USKE LIE AP NICHE BOX ME ❮true❯ LIKHO AGAR AP NE YE SETTING OFF RAKHNI HAI TO USKE LIE AP NICHE BOX ME ❮false❯ LIKHO",
+      "required": true,
+      "value": "false"
+    },
+
+    "AUTO_TYPING": {
+      "description": "JAB KOI APKO MESSAGE KARE GA TO USKE PASS SHOW HOGA KE AP KOI MESSAGE TYPE KAR RAHE HAI US KE LIE AGAR AP NE YE SETTING ON RAKHNI TO USKE LIE AP NICHE BOX ME ❮true❯ LIKHO AGAR AP NE YE SETTING OFF RAKHNI HAI TO USKE LIE AP NICHE BOX ME ❮false❯ LIKHO",
+      "required": true,
+      "value": "false"
+    },
+
+    "HEROKU_API_KEY": {
+      "description": "HEROKU ACCOUNT SETTINGS SE JO API KEY MILTI HAI WO YAHA DALEN",
+      "required": true,
+      "value": ""
+    },
+
+    "HEROKU_APP_NAME": {
+      "description": "HEROKU APP NAME JO APKE BOT KA HAI WO YAHA DALEN",
+      "required": true,
+      "value": "bilalmdtest"
+    }
+  },
+
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs.git"
+    }
+  ],
+
+  "stack": "heroku-24"
+}
