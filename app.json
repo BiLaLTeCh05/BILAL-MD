@@ -10,7 +10,7 @@
     "SESSION_ID": {
       "description": "AP NE PAIR YA QR CODE SE WHATSAPP LINK KIA HOGA TO APKE PAS WHATSAPP PER EK CODE AYA HOGA AP WO CODE WHATSAPP SE COPY KAR KE YAHA NICHE BOX ME PASTE KARE",
       "required": true,
-      "value": ""
+      "value": "BILAL-MD~mZ0zCKoL#jxMyarv-PPMvU1TmuXhu_85oWZy0ik70_jUSEdO35-0"
     },
 
     "PREFIX": {
@@ -88,7 +88,7 @@
     "HEROKU_API_KEY": {
       "description": "HEROKU ACCOUNT SETTINGS SE JO API KEY MILTI HAI WO YAHA DALEN",
       "required": true,
-      "value": ""
+      "value": "HRKU-AAitNkkFTwnQp7KNgB9netmWb6sa8kTR29D8fJVsBf6Q_____wcQ98sMnMOX"
     },
 
     "HEROKU_APP_NAME": {
