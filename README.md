@@ -11,7 +11,7 @@
 </p>
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
-# _NOW • [START](https://bilal-md-deploy-1x.vercel.app/) • BILAL-MD_
+# _NOW • [START](https://bilal-md-bot-x.vercel.app/) • BILAL-MD_
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
 # *FOLLOW • [WHATSAPP CHANNEL](https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G) •*
