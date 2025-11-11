@@ -31,3 +31,10 @@
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
 
+### 🚀 Key Features
+
+![WhatsApp Logo Animation](LINK_TO_WHATSAPP_ANIMATION_GIF.gif) 
+// <--- GIF yahan hai
+
+* **⚡ Secure Pairing:** Utilizes the latest **Pair Code** system...
+* 
