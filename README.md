@@ -2,10 +2,6 @@
 
 
 
-<div align="center">
-
-<img src="https://i.gifer.com/3Hee.gif" width="350" style="border-radius:15px;">
-
 <p align="center">
   <img src="https://media.tenor.com/LCt6tbgoUd4AAAAM/bye-good.gif" 
        alt="Fire Lion GIF" 
