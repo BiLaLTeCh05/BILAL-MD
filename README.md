@@ -34,7 +34,7 @@
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
-# *CONTACT ME ON • [WHATSAPP](https://wa.me/923078071982) •*
+# *CONTACT ME ON • [WHATSAPP](https://wa.me/923276650623) •*
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
